@@ -1,0 +1,5 @@
+__project_name__ = """veille_agent"""
+__author__ = """Matthieu Daviaud"""
+__email__ = """matthieu.daviaud@gmail.com"""
+__version__ = """0.1.0"""
+description = """Agent de veille automatique"""
