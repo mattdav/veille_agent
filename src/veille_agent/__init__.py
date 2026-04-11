@@ -1,3 +1,5 @@
+"""Exports publics du package veille_agent."""
+
 __project_name__ = """veille_agent"""
 __author__ = """Matthieu Daviaud"""
 __email__ = """matthieu.daviaud@gmail.com"""
