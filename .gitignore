@@ -133,8 +133,8 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
-# Lock files
-uv.lock
+# Lock files — versionné pour garantir des builds reproductibles
+# uv.lock
 
 # Utility files
 src/veille_agent/data/

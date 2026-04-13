@@ -58,6 +58,7 @@ select = [
 ]
 ignore = [
     "BLE001",  # blind-except dans youtube.py — voulu pour dégradation gracieuse
+    "E501",    # line too long — géré par ruff format, pas par le linter
 ]
 
 [tool.ruff.format]
