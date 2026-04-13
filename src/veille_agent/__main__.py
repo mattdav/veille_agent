@@ -86,9 +86,7 @@ def _setup_logging(log_path: Path) -> None:
     # Fichier — toutes les entrées DEBUG+
     fh = logging.FileHandler(str(log_file))
     fh.setLevel(logging.DEBUG)
-    fh.setFormatter(
-        logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
-    )
+    fh.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
     root.addHandler(fh)
 
     # Console — WARNING+ visibles dans docker logs
