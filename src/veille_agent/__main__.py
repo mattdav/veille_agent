@@ -15,7 +15,6 @@ Usage::
 """
 
 import argparse
-import importlib.resources
 import logging
 import os
 import sys
@@ -50,25 +49,21 @@ load_dotenv()
 def _get_package_dir(folder_name: str) -> Path:
     """Retourne le chemin absolu d'un sous-dossier du package.
 
+    Utilise ``__file__`` pour résoudre le chemin, ce qui fonctionne
+    dans tous les contextes : installation normale, conteneur Docker,
+    volume monté, mode éditable.
+
     Args:
         folder_name: Nom du sous-dossier (``config``, ``data``, ``log``).
 
     Returns:
-        Chemin vers le dossier.
-
-    Raises:
-        NameError: Si le dossier n'existe pas dans le package.
+        Chemin vers le dossier (créé s'il n'existe pas).
     """
-    try:
-        package_path = Path(
-            str(importlib.resources.files(f"veille_agent.{folder_name}"))
-        )
-        if not package_path.is_dir():
-            raise NameError(f"Dossier introuvable : {folder_name}")
-        return package_path
-    except (ModuleNotFoundError, TypeError) as exc:
-        logging.error("Le dossier %s n'existe pas.", folder_name, exc_info=True)
-        raise NameError(f"Dossier introuvable : {folder_name}") from exc
+    # __file__ = /app/src/veille_agent/__main__.py
+    # parent   = /app/src/veille_agent/
+    folder_path = Path(__file__).parent / folder_name
+    folder_path.mkdir(parents=True, exist_ok=True)
+    return folder_path
 
 
 def _setup_logging(log_path: Path) -> None:
@@ -247,12 +242,9 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    try:
-        log_path = _get_package_dir("log")
-        data_path = _get_package_dir("data")
-        config_path = _get_package_dir("config")
-    except NameError:
-        sys.exit(1)
+    log_path = _get_package_dir("log")
+    data_path = _get_package_dir("data")
+    config_path = _get_package_dir("config")
 
     _setup_logging(log_path)
 
