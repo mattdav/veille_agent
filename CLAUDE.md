@@ -13,6 +13,9 @@ personnalisé via l'API Claude.
 **Qualité** : `ruff` (lint + format), `mypy` (strict), `pytest` (doctest + coverage)
 **Exécution** : `python -m veille_agent` ou `veille_agent` (script installé)
 **Modèle Claude** : `claude-sonnet-4-20250514`
+**Infrastructure** : Docker multi-arch (amd64 + arm64), Raspberry Pi, Portainer
+**Registry** : GitHub Container Registry (`ghcr.io`)
+**Planification** : GitHub Actions cron (lundi 6h UTC) → SSH → Raspberry Pi
 
 ---
 
@@ -25,12 +28,17 @@ veille_agent/
 ├── pyproject.toml                     # config build, dépendances, outils
 ├── uv.lock
 ├── .python-version                    # 3.13
+├── Dockerfile                         # image multi-arch amd64 + arm64
+├── docker-compose.yml                 # définition du service conteneur
+├── .dockerignore                      # exclusions du contexte Docker build
 ├── .env.example                       # variables d'environnement à copier en .env
 ├── .env                               # NE PAS COMMITER — gitignore
 ├── config.cfg.example
 ├── .github/
 │   └── workflows/
-│       └── weekly-watch.yml           # GitHub Actions (lundi 6h UTC)
+│       ├── lint.yml                   # ruff + mypy sur chaque push
+│       ├── test.yml                   # pytest sur chaque push
+│       └── weekly-watch.yml           # build Docker + deploy Raspberry Pi (lundi 6h)
 ├── src/
 │   └── veille_agent/
 │       ├── __init__.py                # métadonnées du package
@@ -319,6 +327,100 @@ python -c "import sqlite3; sqlite3.connect('src/veille_agent/data/watch.db').exe
 
 5. **Boucle de feedback** : ajouter `useful INTEGER DEFAULT NULL` dans la
    table `seen`, implémenter `inv feedback` dans `tasks.py`.
+
+---
+
+## Infrastructure Docker et planification
+
+### Fichiers Docker
+
+- `Dockerfile` : image Python 3.13-slim multi-arch (linux/amd64 + linux/arm64).
+  Build via `docker buildx` — compatible Raspberry Pi sans émulation à l'exécution.
+- `docker-compose.yml` : définit le service `veille_agent` avec les volumes de
+  persistance et la limite mémoire (256 Mo, adapté au Pi).
+- `.dockerignore` : exclut `.env`, `data/`, `.venv/`, `tests/` du contexte de build.
+
+### Volumes persistants sur le Raspberry Pi
+
+Le conteneur est éphémère (`restart: no`) — les données survivent via des
+bind-mounts dans `~/veille_agent/` sur le Pi :
+
+```
+~/veille_agent/
+├── .env                    # secrets (ANTHROPIC_API_KEY, GMAIL_*)
+├── docker-compose.yml      # copie ou symlink depuis le repo
+├── config/
+│   └── profile.yaml        # monté en :ro — éditer ici sans rebuild
+└── data/
+    ├── watch.db            # déduplication SQLite
+    ├── briefings/          # HTML + Markdown générés
+    └── log/                # app.log
+```
+
+### Workflow `weekly-watch.yml`
+
+Déclenché chaque lundi à 6h UTC (7h/8h heure française selon DST) :
+
+1. **Build** : `docker buildx build --platform linux/amd64,linux/arm64` et push
+   sur `ghcr.io/<owner>/veille_agent:latest`
+2. **Deploy** : SSH sur le Raspberry Pi via `appleboy/ssh-action`, `docker pull`
+   puis `docker compose run --rm veille_agent`
+
+### Secrets GitHub à configurer
+
+Dans **Settings > Secrets and variables > Actions** du dépôt :
+
+| Secret            | Valeur                                              |
+|-------------------|-----------------------------------------------------|
+| `RASPI_HOST`      | IP ou nom DNS du Raspberry Pi                       |
+| `RASPI_USER`      | Utilisateur SSH (ex : `pi` ou `matthieu`)           |
+| `RASPI_SSH_KEY`   | Clef privée SSH (contenu de `~/.ssh/id_ed25519`)    |
+| `RASPI_PORT`      | Port SSH (défaut : `22`)                            |
+
+`GITHUB_TOKEN` est fourni automatiquement par GitHub Actions.
+
+### Mise en place initiale sur le Raspberry Pi
+
+```bash
+# 1. Créer la structure de dossiers
+mkdir -p ~/veille_agent/data/briefings ~/veille_agent/data/log ~/veille_agent/config
+
+# 2. Copier profile.yaml (ou le modifier directement)
+cp /chemin/vers/repo/src/veille_agent/config/profile.yaml ~/veille_agent/config/
+
+# 3. Créer le .env avec les secrets
+nano ~/veille_agent/.env
+# ANTHROPIC_API_KEY=sk-ant-...
+# GMAIL_FROM=vous@gmail.com
+# GMAIL_APP_PASSWORD=xxxxxxxxxxxxxxxx
+
+# 4. Copier docker-compose.yml
+cp /chemin/vers/repo/docker-compose.yml ~/veille_agent/
+
+# 5. S'authentifier sur ghcr.io (une seule fois)
+echo $GITHUB_TOKEN | docker login ghcr.io -u <votre-login-github> --password-stdin
+
+# 6. Test manuel
+cd ~/veille_agent
+docker compose run --rm veille_agent
+```
+
+### Générer la clef SSH pour GitHub Actions
+
+```bash
+# Sur le Raspberry Pi
+ssh-keygen -t ed25519 -C "github-actions-veille" -f ~/.ssh/github_actions
+cat ~/.ssh/github_actions.pub >> ~/.ssh/authorized_keys
+
+# Copier la clé privée dans le secret GitHub RASPI_SSH_KEY
+cat ~/.ssh/github_actions
+```
+
+### Déclencher manuellement depuis Portainer
+
+Dans Portainer, créer un **Stack** pointant vers `~/veille_agent/docker-compose.yml`.
+Pour une exécution manuelle : **Stacks > veille_agent > Editor > Deploy the stack**,
+ou via le bouton **Recreate** qui repart de l'image `latest`.
 
 ---
 

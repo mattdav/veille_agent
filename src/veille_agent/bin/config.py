@@ -5,34 +5,20 @@ from dataclasses import dataclass, field
 
 @dataclass
 class WatchConfig:
-    """Paramètres de personnalisation de l'agent de veille.
+    """Paramètres techniques de l'agent de veille.
 
-    Tous les réglages métier sont centralisés ici.
-    Les valeurs par défaut correspondent au profil data-engineering / IA.
+    Centralisés ici : sources, seuils, modèle, comportement des nouvelles
+    fonctionnalités (YouTube, deepdive, recap mensuel).
 
     Examples:
         >>> cfg = WatchConfig()
-        >>> "dbt" in cfg.topics
-        True
         >>> cfg.min_relevance_score
         6.0
+        >>> cfg.deepdive_threshold
+        9.0
+        >>> cfg.recap_since_weeks
+        4
     """
-
-    # Thématiques filtrantes — adaptez à vos centres d'intérêt
-    topics: list[str] = field(
-        default_factory=lambda: [
-            "dbt",
-            "data engineering",
-            "python",
-            "LLM",
-            "agents IA",
-            "pydantic",
-            "polars",
-            "cookiecutter",
-            "RAG",
-            "MCP",
-        ]
-    )
 
     rss_feeds: list[dict[str, str]] = field(
         default_factory=lambda: [
@@ -59,15 +45,33 @@ class WatchConfig:
         default_factory=lambda: ["llm", "data-engineering", "python", "agents"]
     )
 
+    # Chaînes YouTube à surveiller — identifiants UC... ou handles @NomChaine
+    youtube_channels: list[str] = field(
+        default_factory=lambda: [
+            "@dbt-labs",
+            "@PyCon",
+            "UCCTVrRjpphcfzTb9vCuhHsA",  # Andrej Karpathy
+        ]
+    )
+
+    # Nombre max de vidéos par chaîne YouTube par run
+    youtube_max_per_channel: int = 3
+
     # Score minimum pour apparaître dans le briefing (0-10)
     min_relevance_score: float = 6.0
     max_items_per_briefing: int = 20
 
-    # Nombre de jours en arrière pour la collecte RSS
+    # Score minimum pour déclencher un deepdive automatique (0-10)
+    deepdive_threshold: float = 9.0
+
+    # Nombre de jours en arrière pour la collecte RSS et YouTube
     rss_since_days: int = 7
 
-    # Taille des batches envoyés à Claude
+    # Taille des batches envoyés à Claude pour l'analyse
     claude_batch_size: int = 20
 
-    # Modèle Claude à utiliser
+    # Modèle Claude à utiliser pour toutes les fonctions IA
     claude_model: str = "claude-sonnet-4-20250514"
+
+    # Fenêtre du recap mensuel en semaines
+    recap_since_weeks: int = 4

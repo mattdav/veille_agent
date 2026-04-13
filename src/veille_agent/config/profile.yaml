@@ -1,0 +1,78 @@
+# Profil utilisateur pour la veille technologique
+# Ce fichier est lu par bin/profile.py et injecté dans le prompt Claude.
+# Modifiez-le librement — aucun redéploiement nécessaire.
+
+# ---------------------------------------------------------------------------
+# Thématiques filtrantes (utilisées par le pré-filtre ET par Claude)
+# ---------------------------------------------------------------------------
+topics:
+  - dbt
+  - data engineering
+  - python
+  - LLM
+  - agents IA
+  - pydantic
+  - polars
+  - cookiecutter
+  - RAG
+  - MCP
+  - Alteryx
+  - Power BI
+  - TMDL
+
+# ---------------------------------------------------------------------------
+# Sources RSS
+# ---------------------------------------------------------------------------
+rss_feeds:
+  - name: "Hacker News Best"
+    url: "https://hnrss.org/best"
+  - name: "Towards Data Science"
+    url: "https://towardsdatascience.com/feed"
+  - name: "The Batch (deepl.)"
+    url: "https://www.deeplearning.ai/the-batch/feed/"
+  - name: "dbt blog"
+    url: "https://www.getdbt.com/blog/rss.xml"
+  - name: "Martin Fowler"
+    url: "https://martinfowler.com/feed.atom"
+  - name: "Anthropic news"
+    url: "https://www.anthropic.com/rss.xml"
+
+# ---------------------------------------------------------------------------
+# Chaînes YouTube à surveiller
+# Accepte les identifiants UC... ou les handles @NomChaine
+# Nécessite YOUTUBE_API_KEY dans .env
+# ---------------------------------------------------------------------------
+youtube_channels:
+  - "@dbt-labs"
+  - "@PyCon"
+  - "UCCTVrRjpphcfzTb9vCuhHsA"  # Andrej Karpathy
+
+# ---------------------------------------------------------------------------
+# Contexte narratif injecté tel quel dans le prompt d'analyse Claude
+# Décrivez votre situation, vos projets en cours et vos objectifs.
+# Plus c'est précis, plus les scores de pertinence et POC sont pertinents.
+# ---------------------------------------------------------------------------
+context: |
+  Développeur Python senior spécialisé en data engineering et IA.
+  Projets en cours :
+  - Migration de workflows Alteryx vers dbt (transformation SQL, tests dbt-expectations)
+  - Passage de rapports Power BI pbix vers TMDL pour édition batch
+  - Développement d'agents IA autonomes avec l'API Claude (veille, mise à jour de templates)
+  - Création et maintenance de templates cookiecutter mis à jour via cruft
+  - Pipeline d'intégration de fichiers avec validation Pydantic + Pandera
+  Objectif de veille : trouver des outils, techniques ou papiers directement
+  applicables au travail quotidien ou à des POC réalisables en moins d'une journée.
+  Préférence pour les approches pragmatiques et les librairies Python matures.
+
+# ---------------------------------------------------------------------------
+# Critères de scoring pour Claude (0-10)
+# ---------------------------------------------------------------------------
+scoring:
+  # Un article score 9-10 si...  → déclenche aussi un deepdive automatique
+  high: "directement utilisable cette semaine dans un projet en cours"
+  # Un article score 6-8 si...
+  medium: "applicable à moyen terme ou ouvre une piste de POC intéressante"
+  # Un article score < 6 si...
+  low: "intéressant mais trop éloigné des projets actuels"
+  # Seuil d'inclusion dans le briefing
+  threshold: 6.0

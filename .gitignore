@@ -139,4 +139,6 @@ uv.lock
 # Utility files
 src/veille_agent/data/
 src/veille_agent/log/
-src/veille_agent/config/
+# config/ : exclure les fichiers secrets mais versionner profile.yaml
+src/veille_agent/config/*
+!src/veille_agent/config/profile.yaml

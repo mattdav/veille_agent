@@ -1,0 +1,31 @@
+# Environnement virtuel et cache
+.venv/
+__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Secrets — ne jamais inclure dans l'image
+.env
+
+# Données runtime — montées en volume
+src/veille_agent/data/
+src/veille_agent/log/
+
+# Git et CI
+.git/
+.github/
+
+# Documentation et outils de dev
+docs/
+*.md
+!README.md
+tasks.py
+tests/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/

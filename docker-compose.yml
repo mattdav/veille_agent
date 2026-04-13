@@ -1,0 +1,32 @@
+services:
+  veille_agent:
+    image: veille_agent:latest
+    container_name: veille_agent
+
+    # Fichier d'environnement — à créer sur le Raspberry Pi
+    # cp .env.example .env && nano .env
+    env_file:
+      - .env
+
+    volumes:
+      # Persistance des briefings générés entre les exécutions
+      - ./data/briefings:/app/src/veille_agent/data/briefings
+      # Persistance des logs
+      - ./data/log:/app/src/veille_agent/log
+      # Persistance de la base SQLite de déduplication
+      - ./data:/app/src/veille_agent/data
+      # Profil utilisateur modifiable sans rebuild de l'image
+      - ./config/profile.yaml:/app/src/veille_agent/config/profile.yaml:ro
+
+    # Le conteneur s'arrête après exécution (pas un service permanent)
+    restart: "no"
+
+    # Limite mémoire adaptée au Raspberry Pi
+    mem_limit: 256m
+
+    # Journalisation Docker (rotation automatique)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

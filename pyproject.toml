@@ -19,6 +19,7 @@ dependencies = [
     "httpx>=0.27.0",
     "python-dotenv>=1.0.0",
     "pyyaml>=6.0.2",
+    "youtube-transcript-api>=0.6.2",
 ]
 
 [project.scripts]
@@ -55,7 +56,9 @@ select = [
     "C4",  # flake8-comprehensions
     "UP",  # pyupgrade
 ]
-ignore = []
+ignore = [
+    "BLE001",  # blind-except dans youtube.py — voulu pour dégradation gracieuse
+]
 
 [tool.ruff.format]
 quote-style = "double"
