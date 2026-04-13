@@ -49,7 +49,13 @@ def check(ctx: Context) -> None:
 
 
 @task
-def run(ctx: Context, email: str = "", output_dir: str = "", no_youtube: bool = False, no_deepdive: bool = False) -> None:
+def run(
+    ctx: Context,
+    email: str = "",
+    output_dir: str = "",
+    no_youtube: bool = False,
+    no_deepdive: bool = False,
+) -> None:
     """Lance l'agent de veille hebdomadaire complet.
 
     Args:

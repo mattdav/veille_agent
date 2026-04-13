@@ -5,10 +5,11 @@ import logging
 import sqlite3
 from datetime import date, datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
+
+from anthropic.types import TextBlock
 
 from veille_agent.bin.analyst import ANALYST_SYSTEM, ScoredItem, _get_client
-from veille_agent.bin.briefing import generate_html_briefing, generate_markdown_briefing
 from veille_agent.bin.config import WatchConfig
 from veille_agent.bin.profile import UserProfile
 
@@ -91,7 +92,9 @@ def persist_scored_items(
     )
     conn.commit()
     conn.close()
-    logging.info("persist_scored_items: %d articles persistés pour %s", len(rows), week_label)
+    logging.info(
+        "persist_scored_items: %d articles persistés pour %s", len(rows), week_label
+    )
 
 
 def load_recent_scored_items(
@@ -247,7 +250,9 @@ def generate_monthly_recap(
         logging.warning("generate_monthly_recap: aucun article en base — recap ignoré.")
         return []
 
-    print(f"Recap mensuel : {len(articles)} articles analysés sur {since_weeks} semaines...")
+    print(
+        f"Recap mensuel : {len(articles)} articles analysés sur {since_weeks} semaines..."
+    )
 
     prompt = _build_recap_prompt(articles, profile, since_weeks)
     response = _get_client().messages.create(
@@ -257,13 +262,7 @@ def generate_monthly_recap(
         messages=[{"role": "user", "content": prompt}],
     )
 
-    raw_text = response.content[0].text  # type: ignore[union-attr]
-    stripped = raw_text.strip()
-    if stripped.startswith("```"):
-        stripped = stripped.split("\n", 1)[1] if "\n" in stripped else stripped[3:]
-        if stripped.endswith("```"):
-            stripped = stripped[:-3].rstrip()
-        raw_text = stripped
+    raw_text = cast(TextBlock, response.content[0]).text
 
     try:
         trends: list[dict[str, Any]] = json.loads(raw_text)

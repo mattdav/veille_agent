@@ -3,9 +3,10 @@
 import json
 import logging
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, cast
 
 import anthropic
+from anthropic.types import TextBlock
 
 from veille_agent.bin.collector import RawItem
 from veille_agent.bin.profile import UserProfile
@@ -198,7 +199,7 @@ def analyze_batch(
         messages=[{"role": "user", "content": prompt}],
     )
 
-    raw_text = _strip_fences(response.content[0].text)  # type: ignore[union-attr]
+    raw_text = _strip_fences(cast(TextBlock, response.content[0]).text)
 
     if not raw_text:
         logging.warning("analyze_batch: réponse Claude vide — batch ignoré.")
@@ -294,15 +295,13 @@ def deepdive(
             messages=[{"role": "user", "content": prompt}],
         )
         # Récupérer uniquement les blocs de type "text" (ignorer tool_use/tool_result)
-        text_blocks = [
-            block.text  # type: ignore[union-attr]
-            for block in response.content
-            if block.type == "text"
-        ]
+        text_blocks = [block.text for block in response.content if block.type == "text"]
         return "\n\n".join(text_blocks).strip()
 
     except anthropic.APIError as exc:
-        logging.warning("deepdive: erreur API Claude pour '%s' : %s", item.item.title, exc)
+        logging.warning(
+            "deepdive: erreur API Claude pour '%s' : %s", item.item.title, exc
+        )
         return ""
 
 

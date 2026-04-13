@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir uv
 
 # Copier les fichiers de dépendances en premier (layer cache Docker)
 # uv.lock est versionné — présent dans le repo après retrait du .gitignore
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml uv.lock README.md ./
 
 # Installer uniquement les dépendances runtime (pas dev/lint/docs)
 # --frozen : refuse d'installer si le lock est désynchronisé avec pyproject.toml

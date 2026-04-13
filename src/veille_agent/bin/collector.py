@@ -6,7 +6,7 @@ import urllib.parse
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 
-import feedparser  # type: ignore[import-untyped]
+import feedparser
 import httpx
 
 

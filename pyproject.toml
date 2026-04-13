@@ -95,6 +95,11 @@ skip_empty = true
 python_version = "3.13"
 strict = true
 
+[[tool.mypy.overrides]]
+# feedparser et youtube-transcript-api n'ont pas de stubs publiés
+module = ["feedparser", "youtube_transcript_api"]
+ignore_missing_imports = true
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/veille_agent"]
 

@@ -238,9 +238,7 @@ def main() -> None:
     _setup_logging(log_path)
 
     db_path = str(data_path / "watch.db")
-    output_dir = (
-        Path(args.output_dir) if args.output_dir else data_path / "briefings"
-    )
+    output_dir = Path(args.output_dir) if args.output_dir else data_path / "briefings"
 
     config = WatchConfig()
     profile = load_profile(config_path / "profile.yaml")

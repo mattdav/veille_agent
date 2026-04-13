@@ -2,7 +2,7 @@
 
 import logging
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import httpx
 
@@ -34,13 +34,13 @@ def fetch_transcript(video_id: str, max_chars: int = 2000) -> str:
         ''
     """
     try:
-        from youtube_transcript_api import (  # type: ignore[import-untyped]
+        from youtube_transcript_api import (
             NoTranscriptFound,
-            TranscriptsDisabled,
             YouTubeTranscriptApi,
         )
 
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+        # v1.x : YouTubeTranscriptApi s'instancie, list() remplace list_transcripts()
+        transcript_list = YouTubeTranscriptApi().list(video_id)
 
         # Priorité : français > anglais > première langue disponible
         transcript = None
@@ -54,8 +54,10 @@ def fetch_transcript(video_id: str, max_chars: int = 2000) -> str:
         if transcript is None:
             transcript = next(iter(transcript_list))
 
-        snippets = transcript.fetch()
-        text = " ".join(s["text"] for s in snippets)
+        # v1.x : fetch() retourne FetchedTranscript (itérable de FetchedTranscriptSnippet)
+        # Les snippets exposent .text comme attribut (plus de dict)
+        fetched = transcript.fetch()
+        text = " ".join(snippet.text for snippet in fetched)
         return text[:max_chars]
 
     except Exception as exc:  # noqa: BLE001
@@ -100,7 +102,7 @@ def collect_youtube(
         )
         return []
 
-    cutoff = datetime.now(tz=timezone.utc) - timedelta(days=since_days)
+    cutoff = datetime.now(tz=UTC) - timedelta(days=since_days)
     published_after = cutoff.strftime("%Y-%m-%dT%H:%M:%SZ")
     items: list[RawItem] = []
 
@@ -154,7 +156,9 @@ def collect_youtube(
                 )
 
         except httpx.RequestError as exc:
-            logging.warning("collect_youtube: erreur réseau pour %s : %s", channel_id, exc)
+            logging.warning(
+                "collect_youtube: erreur réseau pour %s : %s", channel_id, exc
+            )
             continue
 
     return items

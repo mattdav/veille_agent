@@ -54,9 +54,7 @@ _CSS = """
 """
 
 
-def generate_html_briefing(
-    scored_items: list[ScoredItem], config: WatchConfig
-) -> str:
+def generate_html_briefing(scored_items: list[ScoredItem], config: WatchConfig) -> str:
     """Génère un briefing HTML autonome (CSS intégré, pas de CDN).
 
     Inclut la section deepdive pour les articles dont le champ
@@ -75,11 +73,9 @@ def generate_html_briefing(
         >>> "<html" in html
         True
     """
-    top = [
-        s
-        for s in scored_items
-        if s.relevance >= config.min_relevance_score
-    ][: config.max_items_per_briefing]
+    top = [s for s in scored_items if s.relevance >= config.min_relevance_score][
+        : config.max_items_per_briefing
+    ]
 
     poc_items = [s for s in top if s.poc_idea]
     deepdive_items = [s for s in top if s.deepdive]
@@ -118,9 +114,7 @@ def generate_html_briefing(
             score_cls = ""
 
         tags_html = "".join(f'<span class="tag">{t}</span>' for t in s.tags)
-        poc_html = (
-            f'<div class="poc">POC : {s.poc_idea}</div>\n' if s.poc_idea else ""
-        )
+        poc_html = f'<div class="poc">POC : {s.poc_idea}</div>\n' if s.poc_idea else ""
         deepdive_html = ""
         if s.deepdive:
             # Conversion minimale Markdown → HTML pour le deepdive
@@ -179,11 +173,9 @@ def generate_markdown_briefing(
         >>> md.startswith("# Veille tech")
         True
     """
-    top = [
-        s
-        for s in scored_items
-        if s.relevance >= config.min_relevance_score
-    ][: config.max_items_per_briefing]
+    top = [s for s in scored_items if s.relevance >= config.min_relevance_score][
+        : config.max_items_per_briefing
+    ]
 
     week = date.today().strftime("%Y-W%W")
     lines = [f"# Veille tech {week}\n"]
@@ -199,9 +191,7 @@ def generate_markdown_briefing(
     lines.append("## Articles\n")
     for s in top:
         hashtags = " ".join(f"#{t}" for t in s.tags)
-        lines.append(
-            f"### [{s.item.title}]({s.item.url}) `{s.relevance:.0f}/10`"
-        )
+        lines.append(f"### [{s.item.title}]({s.item.url}) `{s.relevance:.0f}/10`")
         lines.append(f"*{s.item.source} · {hashtags}*\n")
         lines.append(s.summary_fr)
         if s.poc_idea:
