@@ -72,13 +72,30 @@ def _get_package_dir(folder_name: str) -> Path:
 
 
 def _setup_logging(log_path: Path) -> None:
-    """Configure le logger applicatif vers ``log/app.log``."""
+    """Configure le logger applicatif vers ``log/app.log`` et stdout.
+
+    Le StreamHandler garantit que les erreurs critiques apparaissent
+    dans ``docker logs`` même si le volume log n'est pas monté.
+    """
+    log_path.mkdir(parents=True, exist_ok=True)
     log_file = log_path / "app.log"
-    logging.basicConfig(
-        filename=str(log_file),
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        level=logging.DEBUG,
+
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    # Fichier — toutes les entrées DEBUG+
+    fh = logging.FileHandler(str(log_file))
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(
+        logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
     )
+    root.addHandler(fh)
+
+    # Console — WARNING+ visibles dans docker logs
+    sh = logging.StreamHandler()
+    sh.setLevel(logging.WARNING)
+    sh.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
+    root.addHandler(sh)
 
 
 def run(
