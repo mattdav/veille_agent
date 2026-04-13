@@ -60,9 +60,13 @@ def _get_package_dir(folder_name: str) -> Path:
         NameError: Si le dossier n'existe pas dans le package.
     """
     try:
-        with importlib.resources.path(f"veille_agent.{folder_name}", "") as p:
-            return Path(p)
-    except (NameError, ModuleNotFoundError) as exc:
+        package_path = Path(
+            str(importlib.resources.files(f"veille_agent.{folder_name}"))
+        )
+        if not package_path.is_dir():
+            raise NameError(f"Dossier introuvable : {folder_name}")
+        return package_path
+    except (ModuleNotFoundError, TypeError) as exc:
         logging.error("Le dossier %s n'existe pas.", folder_name, exc_info=True)
         raise NameError(f"Dossier introuvable : {folder_name}") from exc
 

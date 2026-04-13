@@ -136,9 +136,13 @@ cython_debug/
 # Lock files — versionné pour garantir des builds reproductibles
 # uv.lock
 
-# Utility files
-src/veille_agent/data/
-src/veille_agent/log/
-# config/ : exclure les fichiers secrets mais versionner profile.yaml
+# Utility files — exclure les données runtime mais garder les __init__.py
+# (nécessaires pour que importlib.resources trouve les sous-packages)
+src/veille_agent/data/*
+!src/veille_agent/data/__init__.py
+src/veille_agent/log/*
+!src/veille_agent/log/__init__.py
+# config/ : exclure les fichiers secrets mais versionner profile.yaml et __init__.py
 src/veille_agent/config/*
 !src/veille_agent/config/profile.yaml
+!src/veille_agent/config/__init__.py
