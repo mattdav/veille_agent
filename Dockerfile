@@ -7,22 +7,20 @@ WORKDIR /app
 
 RUN pip install --no-cache-dir uv
 
-# Copier uniquement les fichiers de métadonnées en premier.
-# uv résout et installe les dépendances tierces à cette étape,
-# sans toucher au projet lui-même (--no-install-project).
-# Cela préserve le cache Docker : ce layer ne se reconstruit que
-# si pyproject.toml ou uv.lock changent, pas à chaque modif du code.
+# Passe 1 — dépendances tierces uniquement.
+# --no-install-project : n'installe pas veille_agent lui-même,
+# donc hatchling ne cherche pas py.typed qui n'existe pas encore.
+# Ce layer est mis en cache tant que pyproject.toml / uv.lock ne changent pas.
 COPY pyproject.toml uv.lock README.md ./
 RUN uv sync --no-dev --frozen --no-install-project
 
-# Copier le code source (invalidera le cache Docker si le code change)
+# Passe 2 — code source puis installation du projet.
+# uv sync est idempotent : seul le projet manquant est installé,
+# les dépendances déjà présentes ne sont pas retéléchargées.
 COPY src/ ./src/
+RUN uv sync --no-dev --frozen
 
-# Installer le projet lui-même maintenant que src/ est présent.
-# --no-deps : les dépendances sont déjà installées à l'étape précédente.
-RUN uv sync --no-dev --frozen --no-deps
-
-# Créer les dossiers runtime montés en volume en production
+# Dossiers runtime (montés en volume en production)
 RUN mkdir -p src/veille_agent/data/briefings \
              src/veille_agent/log \
              src/veille_agent/config
