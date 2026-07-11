@@ -35,7 +35,6 @@ from veille_agent.bin.collector import (
     deduplicate,
     mark_seen,
 )
-from veille_agent.bin.config import WatchConfig
 from veille_agent.bin.filter import pre_filter
 from veille_agent.bin.mailer import send_email
 from veille_agent.bin.profile import UserProfile, load_profile
@@ -92,7 +91,6 @@ def _setup_logging(log_path: Path) -> None:
 
 
 def run(
-    config: WatchConfig,
     profile: UserProfile,
     db_path: str,
     output_dir: Path,
@@ -104,7 +102,6 @@ def run(
     """Exécute le pipeline hebdomadaire complet.
 
     Args:
-        config: Paramètres techniques de l'agent.
         profile: Profil utilisateur chargé depuis ``profile.yaml``.
         db_path: Chemin vers la base SQLite.
         output_dir: Dossier de sortie pour les briefings.
@@ -118,14 +115,14 @@ def run(
     """
     print("1/6 — Collecte des sources...")
     items = []
-    items += collect_rss(config.rss_feeds, since_days=config.rss_since_days)
-    items += collect_arxiv(config.arxiv_categories)
-    items += collect_github_trending(config.github_topics)
-    if enable_youtube and config.youtube_channels:
+    items += collect_rss(profile.rss_feeds, since_days=profile.rss_since_days)
+    items += collect_arxiv(profile.arxiv_categories)
+    items += collect_github_trending(profile.github_topics)
+    if enable_youtube and profile.youtube_channels:
         items += collect_youtube(
-            config.youtube_channels,
-            since_days=config.rss_since_days,
-            max_per_channel=config.youtube_max_per_channel,
+            profile.youtube_channels,
+            since_days=profile.rss_since_days,
+            max_per_channel=profile.youtube_max_per_channel,
         )
     print(f"    {len(items)} items bruts collectés")
 
@@ -155,16 +152,11 @@ def run(
 
     print("5/6 — Analyse Claude (batch)...")
     scored_all: list[ScoredItem] = []
-    batch_size = config.claude_batch_size
+    batch_size = profile.claude_batch_size
     total_batches = max(1, (len(items) - 1) // batch_size + 1)
     for i in range(0, len(items), batch_size):
         batch = items[i : i + batch_size]
-        scored_all += analyze_batch(
-            batch,
-            profile,
-            fulltext,
-            model=config.claude_model,
-        )
+        scored_all += analyze_batch(batch, profile, fulltext)
         print(f"    Batch {i // batch_size + 1}/{total_batches} analysé")
 
     print("6/6 — Deepdive des articles top...")
@@ -172,8 +164,7 @@ def run(
         scored_all = run_deepdives(
             scored_all,
             profile,
-            model=config.claude_model,
-            threshold=config.deepdive_threshold,
+            threshold=profile.deepdive_threshold,
         )
     else:
         print("    Deepdive désactivé.")
@@ -181,15 +172,15 @@ def run(
     output_dir.mkdir(parents=True, exist_ok=True)
     stem = date.today().strftime("%Y-W%W")
 
-    html = generate_html_briefing(scored_all, config)
-    md = generate_markdown_briefing(scored_all, config)
+    html = generate_html_briefing(scored_all, profile)
+    md = generate_markdown_briefing(scored_all, profile)
 
     (output_dir / f"{stem}.html").write_text(html, encoding="utf-8")
     (output_dir / f"{stem}.md").write_text(md, encoding="utf-8")
     print(f"Briefing sauvegardé : {output_dir / stem}.*")
 
     mark_seen(items, db_path)
-    persist_scored_items(scored_all, stem, db_path)
+    persist_scored_items(scored_all, stem, db_path, threshold=profile.threshold)
 
     if email_to:
         send_email(html, to=email_to, subject=f"Veille tech {stem}")
@@ -238,7 +229,7 @@ def main() -> None:
         type=int,
         default=None,
         metavar="N",
-        help="Fenêtre du recap en semaines (défaut : config.recap_since_weeks)",
+        help="Fenêtre du recap en semaines (défaut : profile.recap_since_weeks)",
     )
     args = parser.parse_args()
 
@@ -251,7 +242,6 @@ def main() -> None:
     db_path = str(data_path / "watch.db")
     output_dir = Path(args.output_dir) if args.output_dir else data_path / "briefings"
 
-    config = WatchConfig()
     profile = load_profile(config_path / "profile.yaml")
 
     # L'adresse destinataire : CLI en priorité, sinon variable d'environnement
@@ -259,19 +249,17 @@ def main() -> None:
 
     try:
         if args.recap:
-            since_weeks = args.recap_weeks or config.recap_since_weeks
+            since_weeks = args.recap_weeks or profile.recap_since_weeks
             print(f"Génération du recap mensuel ({since_weeks} semaines)...")
             generate_monthly_recap(
                 db_path=db_path,
                 profile=profile,
-                config=config,
                 output_dir=output_dir,
                 since_weeks=since_weeks,
                 email_to=email_to,
             )
         else:
             run(
-                config=config,
                 profile=profile,
                 db_path=db_path,
                 output_dir=output_dir,

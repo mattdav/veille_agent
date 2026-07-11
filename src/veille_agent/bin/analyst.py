@@ -134,7 +134,7 @@ def analyze_batch(
     items: list[RawItem],
     profile: UserProfile,
     fulltext: dict[str, str],
-    model: str = "claude-sonnet-4-20250514",
+    model: str | None = None,
 ) -> list[ScoredItem]:
     """Analyse un batch d'articles via l'API Claude.
 
@@ -158,7 +158,8 @@ def analyze_batch(
         items: Articles à analyser.
         profile: Profil utilisateur chargé depuis ``profile.yaml``.
         fulltext: Dict ``{uid: texte_extrait}`` pour les articles sans résumé.
-        model: Identifiant du modèle Claude à utiliser.
+        model: Identifiant du modèle Claude à utiliser (défaut :
+            ``profile.claude_model``).
 
     Returns:
         Liste de :class:`ScoredItem` triée par pertinence décroissante.
@@ -193,7 +194,7 @@ def analyze_batch(
     prompt = _build_prompt(articles_payload, profile)
 
     response = _get_client().messages.create(
-        model=model,
+        model=model or profile.claude_model,
         max_tokens=4000,
         system=ANALYST_SYSTEM,
         messages=[{"role": "user", "content": prompt}],
@@ -238,7 +239,7 @@ def analyze_batch(
 def deepdive(
     item: ScoredItem,
     profile: UserProfile,
-    model: str = "claude-sonnet-4-20250514",
+    model: str | None = None,
 ) -> str:
     """Approfondit un article via l'outil de recherche web intégré à Claude.
 
@@ -250,7 +251,7 @@ def deepdive(
     Args:
         item: Article à approfondir (doit avoir ``relevance >= 9``).
         profile: Profil utilisateur pour contextualiser l'analyse.
-        model: Modèle Claude à utiliser.
+        model: Modèle Claude à utiliser (défaut : ``profile.claude_model``).
 
     Returns:
         Analyse enrichie en Markdown, ou chaîne vide en cas d'erreur.
@@ -288,7 +289,7 @@ def deepdive(
 
     try:
         response = _get_client().messages.create(
-            model=model,
+            model=model or profile.claude_model,
             max_tokens=2000,
             system=_DEEPDIVE_SYSTEM,
             tools=[{"type": "web_search_20250305", "name": "web_search"}],
@@ -308,7 +309,7 @@ def deepdive(
 def run_deepdives(
     scored_items: list[ScoredItem],
     profile: UserProfile,
-    model: str = "claude-sonnet-4-20250514",
+    model: str | None = None,
     threshold: float = 9.0,
 ) -> list[ScoredItem]:
     """Lance les deepdives pour les articles dépassant le seuil de pertinence.
@@ -316,7 +317,7 @@ def run_deepdives(
     Args:
         scored_items: Tous les articles scorés de la semaine.
         profile: Profil utilisateur.
-        model: Modèle Claude à utiliser.
+        model: Modèle Claude à utiliser (défaut : ``profile.claude_model``).
         threshold: Score minimum pour déclencher un deepdive (défaut : 9.0).
 
     Returns:

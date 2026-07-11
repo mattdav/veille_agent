@@ -12,10 +12,36 @@ personnalisé via l'API Claude.
 **Automatisation** : `invoke` (`inv lint`, `inv test`, `inv run`…)
 **Qualité** : `ruff` (lint + format), `mypy` (strict), `pytest` (doctest + coverage)
 **Exécution** : `python -m veille_agent` ou `veille_agent` (script installé)
-**Modèle Claude** : `claude-sonnet-4-20250514`
+**Modèle Claude** : défini dans `profile.yaml` (`claude_model`) — voir
+« Principe de configuration » ci-dessous
 **Infrastructure** : Docker multi-arch (amd64 + arm64), Raspberry Pi, Portainer
 **Registry** : GitHub Container Registry (`ghcr.io`)
 **Planification** : GitHub Actions cron (lundi 6h UTC) → SSH → Raspberry Pi
+
+---
+
+## Principe de configuration
+
+Toute valeur « tunable » — une valeur que l'utilisateur pourrait raisonnablement
+vouloir changer sans toucher au code Python (thématiques, sources, seuils,
+limites, modèle Claude) — vit dans `src/veille_agent/config/profile.yaml`.
+`.env` est réservé strictement aux secrets et identifiants
+(`ANTHROPIC_API_KEY`, `GMAIL_APP_PASSWORD`, `GITHUB_TOKEN`, `YOUTUBE_API_KEY`).
+
+**Aucune modification de fichier Python ne doit jamais être nécessaire pour
+changer une thématique, une source, un seuil, une limite ou le modèle Claude
+utilisé.**
+
+Les constantes qui relèvent d'un détail d'implémentation restent légitimement
+dans le code : timeouts réseau, noms de tables SQL, formats de date, CSS du
+HTML généré, logique de retry. La frontière : si la valeur encode « qui je
+suis / ce qui m'intéresse / comment le pipeline doit se comporter », elle va
+dans `profile.yaml` ; si elle encode « comment le code accomplit
+techniquement la tâche », elle reste en dur.
+
+**Modèle Claude** : défini dans `profile.yaml` (`claude_model`). Vérifier
+https://platform.claude.com/docs/en/about-claude/model-deprecations avant
+toute mise à jour.
 
 ---
 
@@ -46,18 +72,19 @@ veille_agent/
 │       ├── py.typed                   # marqueur PEP 561
 │       ├── bin/                       # modules métier
 │       │   ├── __init__.py
-│       │   ├── config.py              # WatchConfig (paramètres techniques)
-│       │   ├── profile.py             # UserProfile + load_profile()
+│       │   ├── profile.py             # UserProfile (profil + technique) + load_profile()
 │       │   ├── collector.py           # collecte RSS / arXiv / GitHub
 │       │   ├── filter.py              # pré-filtrage par mots-clés
 │       │   ├── reader.py              # extraction full-text via Jina Reader
-│       │   ├── analyst.py             # analyse batch via Claude API
+│       │   ├── youtube.py             # collecte + transcript YouTube
+│       │   ├── analyst.py             # analyse batch + deepdive via Claude API
 │       │   ├── briefing.py            # génération HTML + Markdown
+│       │   ├── recap.py               # recap mensuel Top-K + persistance SQLite
 │       │   └── mailer.py              # envoi Gmail SMTP
 │       ├── config/                    # dossier runtime (gitignore sauf profile.yaml)
 │       │   └── profile.yaml           # ÉDITER ICI — profil utilisateur déclaratif
 │       ├── data/                      # dossier runtime (gitignore)
-│       │   ├── watch.db               # SQLite déduplication
+│       │   ├── watch.db               # SQLite déduplication + recap
 │       │   └── briefings/             # livrables générés
 │       │       ├── 2025-W42.html
 │       │       └── 2025-W42.md
@@ -84,11 +111,24 @@ personnaliser le comportement de l'agent. Il contient :
   injectée telle quelle dans le prompt Claude
 - `scoring.high/medium/low` : définitions des niveaux de score en langage
   naturel — permettent à Claude de calibrer ses notes
-- `scoring.threshold` : seuil d'inclusion dans le briefing (défaut 6.0)
+- `scoring.threshold` : seuil unique d'inclusion dans le briefing et de
+  persistance recap (défaut 6.0) — source de vérité unique, utilisée partout
+  dans le pipeline
+- `rss_feeds` : sources RSS/Atom (`name` + `url`)
+- `rss_since_days` : fenêtre de collecte RSS/Atom en jours
+- `arxiv_categories` : catégories arXiv surveillées
+- `github_topics` : topics GitHub Trending surveillés
+- `youtube_channels` : chaînes YouTube (handles `@...` ou identifiants `UC...`)
+- `youtube_max_per_channel` : nombre max de vidéos collectées par chaîne
+- `claude_model` : identifiant du modèle Claude utilisé pour l'analyse et les
+  deepdives
+- `claude_batch_size` : nombre d'articles par appel Claude
+- `deepdive_threshold` : score minimum déclenchant un deepdive
+- `max_items_per_briefing` : nombre maximum d'articles dans un briefing
+- `recap_since_weeks` : fenêtre par défaut du recap mensuel, en semaines
 
-**Règle** : tout ce qui relève du "qui je suis et ce qui m'intéresse" va dans
-`profile.yaml`. Tout ce qui relève du "comment le programme fonctionne"
-(sources, batch size, modèle) reste dans `WatchConfig`.
+**Règle** : tout ce qui est modifiable sans redéploiement va dans
+`profile.yaml`. Voir « Principe de configuration » ci-dessus.
 
 ---
 
@@ -102,46 +142,41 @@ Fonctions :
 - `_get_package_dir(folder_name)` : résout les chemins runtime via
   `importlib.resources`
 - `_setup_logging(log_path)` : configure le logger dans `log/app.log`
-- `run(config, profile, db_path, output_dir, email_to, dry_run)` : pipeline
+- `run(profile, db_path, output_dir, email_to, dry_run)` : pipeline
   complet, retourne la liste des `ScoredItem`
-- `main()` : parse les arguments CLI, charge `WatchConfig` et `UserProfile`,
-  appelle `run()`
+- `main()` : parse les arguments CLI, charge `UserProfile`, appelle `run()`
 
 **Arguments CLI** :
 ```
 --email ADRESSE     Envoyer le briefing par email via Gmail
 --dry-run           Collecter et filtrer sans appeler Claude ni écrire en base
 --output-dir PATH   Dossier de sortie (défaut : data/briefings/)
+--no-youtube        Désactiver la collecte YouTube
+--no-deepdive       Désactiver le deepdive automatique
+--recap             Générer le recap mensuel Top-K (sans run hebdomadaire)
+--recap-weeks N     Fenêtre du recap en semaines (défaut : profile.recap_since_weeks)
 ```
 
 **Règle** : `__main__.py` n'orchestre que — toute logique métier va dans `bin/`.
 
 ---
 
-### `bin/config.py` — `WatchConfig`
-
-Dataclass des paramètres **techniques** de l'agent (sources, batch size,
-modèle). Ne contient rien de propre au profil utilisateur.
-
-Champs :
-- `rss_feeds` : liste de `{"name": str, "url": str}`
-- `arxiv_categories`, `github_topics` : sources à surveiller
-- `min_relevance_score` : seuil de briefing (lu depuis `profile.threshold` en
-  pratique — `WatchConfig` garde la valeur par défaut comme fallback)
-- `claude_batch_size` : items par appel Claude (max recommandé : 20)
-- `claude_model` : identifiant du modèle
-
-**Règle** : ne jamais hard-coder de valeurs dans les autres modules.
-
----
-
 ### `bin/profile.py` — `UserProfile` + `load_profile()`
 
-- `UserProfile` : dataclass avec `topics`, `context`, `scoring_*`, `threshold`
-- `load_profile(path: Path) -> UserProfile` : charge `profile.yaml` via
-  `yaml.safe_load()`
+`UserProfile` est la dataclass unique portant tout ce qui est personnalisable :
+thématiques, contexte narratif, critères de scoring, sources à surveiller et
+paramètres techniques (modèle Claude, seuils, tailles de batch).
 
-**Règle** : modifier `profile.yaml` ne nécessite pas de toucher au code Python.
+- `UserProfile` : `topics`, `context`, `scoring_high/medium/low`, `threshold`,
+  `rss_feeds`, `rss_since_days`, `arxiv_categories`, `github_topics`,
+  `youtube_channels`, `youtube_max_per_channel`, `claude_model`,
+  `claude_batch_size`, `deepdive_threshold`, `max_items_per_briefing`,
+  `recap_since_weeks`
+- `load_profile(path: Path) -> UserProfile` : charge `profile.yaml` via
+  `yaml.safe_load()`, accès direct `data["clé"]` (pas de fallback silencieux)
+
+**Règle** : modifier `profile.yaml` ne nécessite jamais de toucher au code
+Python.
 
 ---
 
@@ -159,7 +194,9 @@ Fonctions indépendantes retournant `list[RawItem]` :
 `[]` en cas d'échec — jamais de propagation d'exception.
 
 **Ajouter une source** : créer `collect_xxx() -> list[RawItem]` dans
-`collector.py`, l'appeler dans `__main__.py::run()`.
+`collector.py`, l'appeler dans `__main__.py::run()`. Si la source est
+paramétrable (URL, catégories, topics…), ajouter le champ correspondant dans
+`UserProfile` et `profile.yaml` — aucun autre fichier à modifier.
 
 ---
 
@@ -168,7 +205,10 @@ Fonctions indépendantes retournant `list[RawItem]` :
 - `keyword_score(item, topics) -> float` : regex `\bword\b` sur titre + résumé
 - `pre_filter(items, topics, threshold=0.08)` : élimine le bruit avant Claude
 
-Seuil intentionnellement bas (0.08) — Claude affine ensuite.
+Seuil intentionnellement bas (0.08) — Claude affine ensuite. Ce seuil est un
+détail de calibration interne au filtre (couplé à la formule
+`hits / max(len(topics)*0.3, 1)`), pas une préférence utilisateur : il reste
+en dur.
 
 ---
 
@@ -181,9 +221,21 @@ Seuil intentionnellement bas (0.08) — Claude affine ensuite.
 
 ---
 
+### `bin/youtube.py` — Collecte YouTube
+
+- `collect_youtube(channels, since_days, max_per_channel) -> list[RawItem]`
+- `fetch_transcript(video_id, max_chars=2000) -> str`
+- Nécessite `YOUTUBE_API_KEY` dans `.env`
+
+---
+
 ### `bin/analyst.py` — Cœur IA
 
-- `analyze_batch(items, profile, fulltext, model) -> list[ScoredItem]`
+- `analyze_batch(items, profile, fulltext, model=None) -> list[ScoredItem]`
+  — `model` par défaut résolu depuis `profile.claude_model`
+- `deepdive(item, profile, model=None) -> str` — approfondissement via l'outil
+  `web_search` intégré, pour les articles `relevance >= 9`
+- `run_deepdives(scored_items, profile, model=None, threshold=9.0) -> list[ScoredItem]`
 - `_build_prompt(articles_payload, profile) -> str` : construit le prompt en
   injectant `profile.context`, `profile.topics` et les critères de scoring
 - Client Anthropic : singleton lazy `_get_client()`
@@ -213,10 +265,25 @@ Seuil intentionnellement bas (0.08) — Claude affine ensuite.
 
 ### `bin/briefing.py` — Génération des livrables
 
-- `generate_html_briefing(scored_items, config) -> str` : HTML autonome (CSS
+- `generate_html_briefing(scored_items, profile) -> str` : HTML autonome (CSS
   intégré, **pas de CDN** — obligatoire pour email et usage hors ligne)
-- `generate_markdown_briefing(scored_items, config) -> str` : compatible
+- `generate_markdown_briefing(scored_items, profile) -> str` : compatible
   Obsidian / Notion, nommage `YYYY-WNN`
+
+Les deux fonctions utilisent `profile.threshold` (filtrage) et
+`profile.max_items_per_briefing` (plafond). Les seuils de classe CSS
+(`score.top` ≥ 9, `score.high` ≥ 8) sont un détail d'affichage HTML et
+restent en dur.
+
+---
+
+### `bin/recap.py` — Recap mensuel
+
+- `persist_scored_items(scored_items, stem, db_path, threshold) -> None` :
+  enregistre les articles avec `relevance >= threshold` dans la table
+  `briefing_items`
+- `generate_monthly_recap(db_path, profile, output_dir, since_weeks, email_to)` :
+  Top-K du mois via `profile.claude_model`
 
 ---
 
@@ -244,6 +311,7 @@ Seuil intentionnellement bas (0.08) — Claude affine ensuite.
 | `inv check`    | `lint` puis `test` (CI complète)                |
 | `inv run`      | `python -m veille_agent`                        |
 | `inv dry-run`  | `python -m veille_agent --dry-run`              |
+| `inv recap`    | `python -m veille_agent --recap`                |
 
 ---
 
@@ -258,8 +326,10 @@ Copier `.env.example` en `.env` à la racine du projet.
 | `GMAIL_FROM`        | Non         | Adresse Gmail expéditrice                     |
 | `GMAIL_APP_PASSWORD`| Non         | Mot de passe d'application Gmail (16 chars)   |
 | `GITHUB_TOKEN`      | Non         | API GitHub > 60 req/h (utile si > 10 topics)  |
+| `YOUTUBE_API_KEY`   | Non         | Requis pour activer la collecte YouTube       |
 
-**Règle** : ne jamais hard-coder de valeurs secrètes. `.env` est gitignore.
+**Règle** : `.env` est réservé aux secrets/identifiants — jamais de valeur
+tunable (seuil, source, modèle) n'y vit. `.env` est gitignore.
 
 ---
 
@@ -314,16 +384,20 @@ python -c "import sqlite3; sqlite3.connect('src/veille_agent/data/watch.db').exe
 ## Points d'extension prioritaires
 
 1. **Nouvelle source** : `collect_xxx() -> list[RawItem]` dans `collector.py`,
-   appel dans `__main__.py::run()`. Aucun autre fichier à modifier.
+   appel dans `__main__.py::run()`. Si l'URL/les paramètres doivent être
+   personnalisables, ajouter le champ dans `UserProfile` + `profile.yaml`.
+   Aucun autre fichier à modifier.
 
 2. **Modifier le profil** : éditer uniquement `config/profile.yaml` — pas de
    code à changer.
 
-3. **Nouveau champ `ScoredItem`** : mettre à jour simultanément `_build_prompt()`
-   + parsing dans `analyst.py`, `ScoredItem`, et `briefing.py`.
+3. **Changer le modèle Claude** : éditer `claude_model` dans `profile.yaml` —
+   pas de code à changer. Vérifier
+   https://platform.claude.com/docs/en/about-claude/model-deprecations avant
+   toute mise à jour.
 
-4. **Nouveau paramètre technique** : l'ajouter dans `WatchConfig`, l'utiliser
-   via `config.xxx`.
+4. **Nouveau champ `ScoredItem`** : mettre à jour simultanément `_build_prompt()`
+   + parsing dans `analyst.py`, `ScoredItem`, et `briefing.py`.
 
 5. **Boucle de feedback** : ajouter `useful INTEGER DEFAULT NULL` dans la
    table `seen`, implémenter `inv feedback` dans `tasks.py`.
@@ -373,9 +447,9 @@ Dans **Settings > Secrets and variables > Actions** du dépôt :
 | Secret            | Valeur                                              |
 |-------------------|-----------------------------------------------------|
 | `RASPI_HOST`      | IP ou nom DNS du Raspberry Pi                       |
-| `RASPI_USER`      | Utilisateur SSH (ex : `pi` ou `matthieu`)           |
+| `RASPI_USER`      | Utilisateur SSH (ex : `pi` ou `matthieu`)           |
 | `RASPI_SSH_KEY`   | Clef privée SSH (contenu de `~/.ssh/id_ed25519`)    |
-| `RASPI_PORT`      | Port SSH (défaut : `22`)                            |
+| `RASPI_PORT`      | Port SSH (défaut : `22`)                            |
 
 `GITHUB_TOKEN` est fourni automatiquement par GitHub Actions.
 
@@ -428,7 +502,7 @@ ou via le bouton **Recreate** qui repart de l'image `latest`.
 
 - `.env` et `watch.db` ne sont jamais commités
 - `inv lint` doit retourner **zéro erreur** — aucun `noqa` sans justification
-- Batch size ≤ `config.claude_batch_size` (défaut 20) par appel Claude
+- Batch size ≤ `profile.claude_batch_size` (défaut 20) par appel Claude
 - Le HTML généré est autonome (CSS intégré, pas de CDN externe)
 - `profile.yaml` est la seule interface de personnalisation utilisateur —
   ne pas réintroduire de chaînes de contexte en dur dans le code Python

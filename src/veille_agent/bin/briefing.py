@@ -3,7 +3,7 @@
 from datetime import date
 
 from veille_agent.bin.analyst import ScoredItem
-from veille_agent.bin.config import WatchConfig
+from veille_agent.bin.profile import UserProfile
 
 _CSS = """
   body {
@@ -54,7 +54,7 @@ _CSS = """
 """
 
 
-def generate_html_briefing(scored_items: list[ScoredItem], config: WatchConfig) -> str:
+def generate_html_briefing(scored_items: list[ScoredItem], profile: UserProfile) -> str:
     """Génère un briefing HTML autonome (CSS intégré, pas de CDN).
 
     Inclut la section deepdive pour les articles dont le champ
@@ -62,19 +62,27 @@ def generate_html_briefing(scored_items: list[ScoredItem], config: WatchConfig) 
 
     Args:
         scored_items: Articles scorés et triés par pertinence.
-        config: Configuration pour les seuils et plafonds.
+        profile: Profil utilisateur pour les seuils et plafonds.
 
     Returns:
         Chaîne HTML complète prête à écrire sur disque ou envoyer par email.
 
     Examples:
-        >>> cfg = WatchConfig()
-        >>> html = generate_html_briefing([], cfg)
+        >>> from veille_agent.bin.profile import UserProfile
+        >>> p = UserProfile(
+        ...     topics=["dbt"],
+        ...     context="Dev Python.",
+        ...     scoring_high="h",
+        ...     scoring_medium="m",
+        ...     scoring_low="l",
+        ...     threshold=6.0,
+        ... )
+        >>> html = generate_html_briefing([], p)
         >>> "<html" in html
         True
     """
-    top = [s for s in scored_items if s.relevance >= config.min_relevance_score][
-        : config.max_items_per_briefing
+    top = [s for s in scored_items if s.relevance >= profile.threshold][
+        : profile.max_items_per_briefing
     ]
 
     poc_items = [s for s in top if s.poc_idea]
@@ -153,7 +161,7 @@ def generate_html_briefing(scored_items: list[ScoredItem], config: WatchConfig) 
 
 
 def generate_markdown_briefing(
-    scored_items: list[ScoredItem], config: WatchConfig
+    scored_items: list[ScoredItem], profile: UserProfile
 ) -> str:
     """Génère un briefing Markdown compatible Obsidian / Notion.
 
@@ -162,19 +170,27 @@ def generate_markdown_briefing(
 
     Args:
         scored_items: Articles scorés et triés par pertinence.
-        config: Configuration pour les seuils et plafonds.
+        profile: Profil utilisateur pour les seuils et plafonds.
 
     Returns:
         Chaîne Markdown.
 
     Examples:
-        >>> cfg = WatchConfig()
-        >>> md = generate_markdown_briefing([], cfg)
+        >>> from veille_agent.bin.profile import UserProfile
+        >>> p = UserProfile(
+        ...     topics=["dbt"],
+        ...     context="Dev Python.",
+        ...     scoring_high="h",
+        ...     scoring_medium="m",
+        ...     scoring_low="l",
+        ...     threshold=6.0,
+        ... )
+        >>> md = generate_markdown_briefing([], p)
         >>> md.startswith("# Veille tech")
         True
     """
-    top = [s for s in scored_items if s.relevance >= config.min_relevance_score][
-        : config.max_items_per_briefing
+    top = [s for s in scored_items if s.relevance >= profile.threshold][
+        : profile.max_items_per_briefing
     ]
 
     week = date.today().strftime("%Y-W%W")

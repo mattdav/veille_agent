@@ -1,6 +1,6 @@
 """Chargement du profil utilisateur depuis le fichier YAML déclaratif."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -11,8 +11,9 @@ import yaml
 class UserProfile:
     """Profil utilisateur chargé depuis ``config/profile.yaml``.
 
-    Encapsule les thématiques, le contexte narratif et les critères de
-    scoring injectés dans le prompt Claude.
+    Porte tout ce qui est personnalisable dans l'agent : thématiques,
+    contexte narratif, critères de scoring, sources à surveiller et
+    paramètres techniques (modèle Claude, seuils, tailles de batch).
 
     Examples:
         >>> p = UserProfile(
@@ -27,6 +28,8 @@ class UserProfile:
         True
         >>> p.threshold
         6.0
+        >>> p.claude_model
+        'claude-sonnet-4-6'
     """
 
     topics: list[str]
@@ -35,6 +38,17 @@ class UserProfile:
     scoring_medium: str
     scoring_low: str
     threshold: float
+    rss_feeds: list[dict[str, str]] = field(default_factory=list)
+    arxiv_categories: list[str] = field(default_factory=list)
+    github_topics: list[str] = field(default_factory=list)
+    youtube_channels: list[str] = field(default_factory=list)
+    youtube_max_per_channel: int = 3
+    max_items_per_briefing: int = 20
+    deepdive_threshold: float = 9.0
+    rss_since_days: int = 7
+    claude_batch_size: int = 20
+    claude_model: str = "claude-sonnet-4-6"
+    recap_since_weeks: int = 4
 
 
 def load_profile(path: Path) -> UserProfile:
@@ -60,6 +74,19 @@ def load_profile(path: Path) -> UserProfile:
         ...       medium: "moyen terme"
         ...       low: "eloigne"
         ...       threshold: 6.0
+        ...     rss_feeds:
+        ...       - name: "Hacker News Best"
+        ...         url: "https://hnrss.org/best"
+        ...     arxiv_categories: [cs.AI, cs.LG]
+        ...     github_topics: [llm, python]
+        ...     youtube_channels: ["@PyCon"]
+        ...     youtube_max_per_channel: 3
+        ...     max_items_per_briefing: 20
+        ...     deepdive_threshold: 9.0
+        ...     rss_since_days: 7
+        ...     claude_batch_size: 20
+        ...     claude_model: "claude-sonnet-4-6"
+        ...     recap_since_weeks: 4
         ... ''')
         >>> with tempfile.NamedTemporaryFile(
         ...     mode='w', suffix='.yaml', delete=False, encoding='utf-8'
@@ -71,6 +98,10 @@ def load_profile(path: Path) -> UserProfile:
         ['dbt', 'python']
         >>> profile.threshold
         6.0
+        >>> profile.rss_feeds[0]["name"]
+        'Hacker News Best'
+        >>> profile.claude_model
+        'claude-sonnet-4-6'
         >>> tmp.unlink()
     """
     if not path.exists():
@@ -87,4 +118,15 @@ def load_profile(path: Path) -> UserProfile:
         scoring_medium=scoring["medium"],
         scoring_low=scoring["low"],
         threshold=float(scoring["threshold"]),
+        rss_feeds=data["rss_feeds"],
+        arxiv_categories=data["arxiv_categories"],
+        github_topics=data["github_topics"],
+        youtube_channels=data["youtube_channels"],
+        youtube_max_per_channel=int(data["youtube_max_per_channel"]),
+        max_items_per_briefing=int(data["max_items_per_briefing"]),
+        deepdive_threshold=float(data["deepdive_threshold"]),
+        rss_since_days=int(data["rss_since_days"]),
+        claude_batch_size=int(data["claude_batch_size"]),
+        claude_model=data["claude_model"],
+        recap_since_weeks=int(data["recap_since_weeks"]),
     )

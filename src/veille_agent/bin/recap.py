@@ -10,7 +10,6 @@ from typing import Any, cast
 from anthropic.types import TextBlock
 
 from veille_agent.bin.analyst import ANALYST_SYSTEM, ScoredItem, _get_client
-from veille_agent.bin.config import WatchConfig
 from veille_agent.bin.profile import UserProfile
 
 _RECAP_SYSTEM = (
@@ -29,19 +28,21 @@ def persist_scored_items(
     scored_items: list[ScoredItem],
     week_label: str,
     db_path: str,
+    threshold: float,
 ) -> None:
     """Persiste les articles scorés en base pour le recap mensuel.
 
-    Stocke uniquement les articles dont la pertinence est >= 6 pour
-    ne pas encombrer la base avec du bruit.
+    Stocke uniquement les articles dont la pertinence dépasse ``threshold``
+    pour ne pas encombrer la base avec du bruit.
 
     Args:
         scored_items: Articles analysés cette semaine.
         week_label: Étiquette de semaine au format ``YYYY-WNN``.
         db_path: Chemin vers la base SQLite.
+        threshold: Score minimum pour être persisté (``profile.threshold``).
 
     Examples:
-        >>> persist_scored_items([], "2025-W01", ":memory:")
+        >>> persist_scored_items([], "2025-W01", ":memory:", threshold=6.0)
     """
     conn = sqlite3.connect(db_path)
     conn.execute(
@@ -79,7 +80,7 @@ def persist_scored_items(
             datetime.now().isoformat(),
         )
         for s in scored_items
-        if s.relevance >= 6.0
+        if s.relevance >= threshold
     ]
     conn.executemany(
         """
@@ -207,7 +208,6 @@ def _build_recap_prompt(
 def generate_monthly_recap(
     db_path: str,
     profile: UserProfile,
-    config: WatchConfig,
     output_dir: Path,
     since_weeks: int = 4,
     email_to: str | None = None,
@@ -220,8 +220,7 @@ def generate_monthly_recap(
 
     Args:
         db_path: Chemin vers la base SQLite.
-        profile: Profil utilisateur.
-        config: Configuration de l'agent.
+        profile: Profil utilisateur (fournit aussi le modèle Claude).
         output_dir: Dossier de sortie.
         since_weeks: Fenêtre d'analyse en semaines (défaut : 4).
         email_to: Si fourni, envoie le rapport par email.
@@ -231,7 +230,6 @@ def generate_monthly_recap(
 
     Examples:
         >>> from pathlib import Path
-        >>> from veille_agent.bin.config import WatchConfig
         >>> from veille_agent.bin.profile import UserProfile
         >>> p = UserProfile(
         ...     topics=["dbt"],
@@ -241,8 +239,7 @@ def generate_monthly_recap(
         ...     scoring_low="l",
         ...     threshold=6.0,
         ... )
-        >>> cfg = WatchConfig()
-        >>> generate_monthly_recap(":memory:", p, cfg, Path("/tmp"), since_weeks=4)
+        >>> generate_monthly_recap(":memory:", p, Path("/tmp"), since_weeks=4)
         []
     """
     articles = load_recent_scored_items(db_path, since_weeks=since_weeks)
@@ -256,7 +253,7 @@ def generate_monthly_recap(
 
     prompt = _build_recap_prompt(articles, profile, since_weeks)
     response = _get_client().messages.create(
-        model=config.claude_model,
+        model=profile.claude_model,
         max_tokens=3000,
         system=_RECAP_SYSTEM,
         messages=[{"role": "user", "content": prompt}],

@@ -19,7 +19,6 @@ personnalisé — livrable par email ou écrit sur disque.
 - [Installation](#installation)
 - [Configuration](#configuration)
   - [Personnalisation du profil](#personnalisation-du-profil--profileyaml)
-  - [Paramètres techniques](#paramètres-techniques--watchconfig)
   - [Variables d'environnement](#variables-denvironnement)
 - [Utilisation](#utilisation)
   - [Commandes invoke](#commandes-invoke)
@@ -91,9 +90,8 @@ inv test
 
 ## Configuration
 
-La configuration se divise en deux niveaux : le **profil utilisateur**
-(ce qui vous intéresse) et les **paramètres techniques** (comment l'agent
-fonctionne). Les deux sont indépendants.
+Toute valeur personnalisable — thématiques, sources, seuils, limites, modèle
+Claude — vit dans un seul fichier déclaratif. `.env` est réservé aux secrets.
 
 ### Personnalisation du profil — `profile.yaml`
 
@@ -103,70 +101,51 @@ requise.
 
 ```yaml
 # Mots-clés utilisés par le pré-filtre ET injectés dans le prompt Claude.
-# Ajoutez ou retirez librement selon vos centres d'intérêt.
 topics:
   - dbt
   - data engineering
   - python
   - LLM
   - agents IA
-  - pydantic
-  - polars
-  - RAG
-  - MCP
 
 # Description narrative de votre situation, vos projets en cours et vos
 # objectifs. Elle est injectée telle quelle dans le prompt d'analyse Claude.
-# Plus elle est précise, plus les scores de pertinence et les idées de POC
-# seront ciblés.
 context: |
   Développeur Python senior spécialisé en data engineering et IA.
   Projets en cours : migration Alteryx → dbt, agents IA autonomes…
   Objectif : trouver des outils directement applicables au travail
   quotidien ou réalisables en POC en moins d'une journée.
 
-# Critères de scoring pour Claude (0-10).
-# Exprimés en langage naturel — Claude calibre ses notes en conséquence.
+# Critères de scoring pour Claude (0-10), en langage naturel.
 scoring:
   high:   "directement utilisable cette semaine dans un projet en cours"
   medium: "applicable à moyen terme ou ouvre une piste de POC intéressante"
   low:    "intéressant mais trop éloigné des projets actuels"
-  # Articles dont le score est en dessous de ce seuil sont exclus du briefing.
+  # Seuil unique d'inclusion dans le briefing ET de persistance recap.
   threshold: 6.0
+
+# Sources à surveiller
+rss_feeds:
+  - name: "Hacker News Best"
+    url: "https://hnrss.org/best"
+rss_since_days: 7
+arxiv_categories: [cs.AI, cs.LG, cs.SE]
+github_topics: [llm, data-engineering, python, agents]
+youtube_channels: ["@PyCon"]
+youtube_max_per_channel: 3
+
+# Paramètres techniques du pipeline
+claude_model: "claude-sonnet-4-6"       # voir model-deprecations avant mise à jour
+claude_batch_size: 20                   # articles par appel Claude (max recommandé : 20)
+deepdive_threshold: 9.0                 # score déclenchant un deepdive
+max_items_per_briefing: 20              # plafond d'articles dans le briefing
+recap_since_weeks: 4                    # fenêtre par défaut du recap mensuel
 ```
 
-### Paramètres techniques — `WatchConfig`
+**Ajouter un flux RSS :** ajouter une entrée `{name, url}` sous `rss_feeds`
+dans `profile.yaml` — aucun redémarrage ni modification de code requis.
 
-Les paramètres techniques sont définis dans
-`src/veille_agent/bin/config.py` via la dataclass `WatchConfig`.
-Modifiez-les directement dans le code si vous souhaitez changer les
-sources ou le comportement du pipeline.
-
-| Paramètre | Défaut | Description |
-|-----------|--------|-------------|
-| `rss_feeds` | 6 flux | Flux RSS surveillés (`name` + `url`) |
-| `arxiv_categories` | `cs.AI`, `cs.LG`, `cs.SE` | Catégories arXiv |
-| `github_topics` | `llm`, `data-engineering`, `python`, `agents` | Topics GitHub |
-| `rss_since_days` | `7` | Fenêtre temporelle RSS en jours |
-| `min_relevance_score` | `6.0` | Score Claude minimum pour apparaître dans le briefing |
-| `max_items_per_briefing` | `20` | Nombre maximum d'articles dans le briefing final |
-| `claude_batch_size` | `20` | Nombre d'articles par appel Claude (max recommandé : 20) |
-| `claude_model` | `claude-sonnet-4-20250514` | Identifiant du modèle Anthropic |
-
-**Ajouter un flux RSS :**
-```python
-rss_feeds: list[dict[str, str]] = field(
-    default_factory=lambda: [
-        ...
-        {"name": "Mon Blog", "url": "https://monblog.com/feed.xml"},
-    ]
-)
-```
-
-**Changer le modèle Claude :**
-```python
-claude_model: str = "claude-opus-4-6"
-```
+**Changer le modèle Claude :** éditer `claude_model` dans `profile.yaml`.
 
 ### Variables d'environnement
 
@@ -344,8 +323,12 @@ def collect_mon_flux(url: str) -> list[RawItem]:
         return []
 
 # __main__.py — dans run()
-items += collect_mon_flux(config.mon_flux_url)
+items += collect_mon_flux(profile.mon_flux_url)
 ```
+
+Si l'URL doit être personnalisable sans toucher au code, ajouter le champ
+correspondant (`mon_flux_url`) à `UserProfile` (`profile.py`) et à
+`profile.yaml`.
 
 ### Ajouter un champ au briefing
 

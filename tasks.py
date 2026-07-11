@@ -88,7 +88,7 @@ def recap(ctx: Context, email: str = "", weeks: int = 0) -> None:
 
     Args:
         email: Adresse email destinataire du recap (optionnel).
-        weeks: Fenêtre en semaines (0 = valeur par défaut du config).
+        weeks: Fenêtre en semaines (0 = valeur par défaut du profil).
     """
     cmd = "python -m veille_agent --recap"
     if email:
