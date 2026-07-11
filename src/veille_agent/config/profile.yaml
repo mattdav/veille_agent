@@ -110,11 +110,6 @@ youtube_max_per_channel: 3
 # Paramètres techniques du pipeline
 # ---------------------------------------------------------------------------
 
-# Modèle Claude utilisé pour l'analyse et les deepdives.
-# Vérifier https://platform.claude.com/docs/en/about-claude/model-deprecations
-# avant toute mise à jour.
-claude_model: "claude-sonnet-4-6"
-
 # Nombre d'articles envoyés par appel à l'API Claude (maîtrise des coûts)
 claude_batch_size: 20
 

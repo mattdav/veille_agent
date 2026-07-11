@@ -151,12 +151,13 @@ def run(
     print(f"    {len(fulltext)} full-texts extraits")
 
     print("5/6 — Analyse Claude (batch)...")
+    model = os.environ["CLAUDE_MODEL"]
     scored_all: list[ScoredItem] = []
     batch_size = profile.claude_batch_size
     total_batches = max(1, (len(items) - 1) // batch_size + 1)
     for i in range(0, len(items), batch_size):
         batch = items[i : i + batch_size]
-        scored_all += analyze_batch(batch, profile, fulltext)
+        scored_all += analyze_batch(batch, profile, fulltext, model=model)
         print(f"    Batch {i // batch_size + 1}/{total_batches} analysé")
 
     print("6/6 — Deepdive des articles top...")
@@ -164,6 +165,7 @@ def run(
         scored_all = run_deepdives(
             scored_all,
             profile,
+            model=model,
             threshold=profile.deepdive_threshold,
         )
     else:

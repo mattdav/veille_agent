@@ -135,7 +135,6 @@ youtube_channels: ["@PyCon"]
 youtube_max_per_channel: 3
 
 # Paramètres techniques du pipeline
-claude_model: "claude-sonnet-4-6"       # voir model-deprecations avant mise à jour
 claude_batch_size: 20                   # articles par appel Claude (max recommandé : 20)
 deepdive_threshold: 9.0                 # score déclenchant un deepdive
 max_items_per_briefing: 20              # plafond d'articles dans le briefing
@@ -145,7 +144,7 @@ recap_since_weeks: 4                    # fenêtre par défaut du recap mensuel
 **Ajouter un flux RSS :** ajouter une entrée `{name, url}` sous `rss_feeds`
 dans `profile.yaml` — aucun redémarrage ni modification de code requis.
 
-**Changer le modèle Claude :** éditer `claude_model` dans `profile.yaml`.
+**Changer le modèle Claude :** éditer `CLAUDE_MODEL` dans `.env`.
 
 ### Variables d'environnement
 
@@ -156,6 +155,7 @@ variables. Le fichier `.env` est chargé automatiquement au démarrage via
 | Variable | Obligatoire | Description |
 |----------|-------------|-------------|
 | `ANTHROPIC_API_KEY` | **Oui** | Clé API Anthropic — obtenir sur [console.anthropic.com](https://console.anthropic.com/) |
+| `CLAUDE_MODEL` | **Oui** | Modèle Claude pour l'analyse et les deepdives (ex: `claude-sonnet-4-6`) |
 | `GMAIL_FROM` | Non | Adresse Gmail expéditrice (ex: `vous@gmail.com`) |
 | `GMAIL_APP_PASSWORD` | Non | Mot de passe d'application Gmail — 16 caractères, sans espaces |
 | `GITHUB_TOKEN` | Non | Token GitHub — augmente la limite de l'API de 60 à 5 000 req/h (utile si > 10 topics) |
@@ -163,6 +163,7 @@ variables. Le fichier `.env` est chargé automatiquement au démarrage via
 Exemple de fichier `.env` :
 ```dotenv
 ANTHROPIC_API_KEY=sk-ant-...
+CLAUDE_MODEL=claude-sonnet-4-6
 GMAIL_FROM=vous@gmail.com
 GMAIL_APP_PASSWORD=abcdabcdabcdabcd
 GITHUB_TOKEN=ghp_...

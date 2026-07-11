@@ -2,6 +2,7 @@
 
 import json
 import logging
+import os
 import sqlite3
 from datetime import date, datetime, timedelta
 from pathlib import Path
@@ -253,7 +254,7 @@ def generate_monthly_recap(
 
     prompt = _build_recap_prompt(articles, profile, since_weeks)
     response = _get_client().messages.create(
-        model=profile.claude_model,
+        model=os.environ["CLAUDE_MODEL"],
         max_tokens=3000,
         system=_RECAP_SYSTEM,
         messages=[{"role": "user", "content": prompt}],

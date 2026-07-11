@@ -28,8 +28,6 @@ class UserProfile:
         True
         >>> p.threshold
         6.0
-        >>> p.claude_model
-        'claude-sonnet-4-6'
     """
 
     topics: list[str]
@@ -47,7 +45,6 @@ class UserProfile:
     deepdive_threshold: float = 9.0
     rss_since_days: int = 7
     claude_batch_size: int = 20
-    claude_model: str = "claude-sonnet-4-6"
     recap_since_weeks: int = 4
 
 
@@ -85,7 +82,6 @@ def load_profile(path: Path) -> UserProfile:
         ...     deepdive_threshold: 9.0
         ...     rss_since_days: 7
         ...     claude_batch_size: 20
-        ...     claude_model: "claude-sonnet-4-6"
         ...     recap_since_weeks: 4
         ... ''')
         >>> with tempfile.NamedTemporaryFile(
@@ -100,8 +96,6 @@ def load_profile(path: Path) -> UserProfile:
         6.0
         >>> profile.rss_feeds[0]["name"]
         'Hacker News Best'
-        >>> profile.claude_model
-        'claude-sonnet-4-6'
         >>> tmp.unlink()
     """
     if not path.exists():
@@ -127,6 +121,5 @@ def load_profile(path: Path) -> UserProfile:
         deepdive_threshold=float(data["deepdive_threshold"]),
         rss_since_days=int(data["rss_since_days"]),
         claude_batch_size=int(data["claude_batch_size"]),
-        claude_model=data["claude_model"],
         recap_since_weeks=int(data["recap_since_weeks"]),
     )

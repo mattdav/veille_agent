@@ -12,7 +12,7 @@ personnalisé via l'API Claude.
 **Automatisation** : `invoke` (`inv lint`, `inv test`, `inv run`…)
 **Qualité** : `ruff` (lint + format), `mypy` (strict), `pytest` (doctest + coverage)
 **Exécution** : `python -m veille_agent` ou `veille_agent` (script installé)
-**Modèle Claude** : défini dans `profile.yaml` (`claude_model`) — voir
+**Modèle Claude** : défini dans `.env` (`CLAUDE_MODEL`) — voir
 « Principe de configuration » ci-dessous
 **Infrastructure** : Docker multi-arch (amd64 + arm64), Raspberry Pi, Portainer
 **Registry** : GitHub Container Registry (`ghcr.io`)
@@ -22,11 +22,14 @@ personnalisé via l'API Claude.
 
 ## Principe de configuration
 
-Toute valeur « tunable » — une valeur que l'utilisateur pourrait raisonnablement
-vouloir changer sans toucher au code Python (thématiques, sources, seuils,
-limites, modèle Claude) — vit dans `src/veille_agent/config/profile.yaml`.
-`.env` est réservé strictement aux secrets et identifiants
-(`ANTHROPIC_API_KEY`, `GMAIL_APP_PASSWORD`, `GITHUB_TOKEN`, `YOUTUBE_API_KEY`).
+- `.env` : secrets/identifiants (`ANTHROPIC_API_KEY`, `GMAIL_APP_PASSWORD`,
+  `GITHUB_TOKEN`, `YOUTUBE_API_KEY`) **et** paramètres techniques d'exécution
+  non-fonctionnels — tout ce qui définit COMMENT/AVEC QUOI le programme
+  tourne pour un déploiement donné (destinataire email `GMAIL_TO`, modèle
+  Claude `CLAUDE_MODEL`).
+- `profile.yaml` : personnalisation fonctionnelle — tout ce qui définit CE
+  QUE le programme surveille et comment il juge la pertinence (thématiques,
+  sources à surveiller, contexte narratif, critères et seuil de scoring).
 
 **Aucune modification de fichier Python ne doit jamais être nécessaire pour
 changer une thématique, une source, un seuil, une limite ou le modèle Claude
@@ -39,7 +42,9 @@ suis / ce qui m'intéresse / comment le pipeline doit se comporter », elle va
 dans `profile.yaml` ; si elle encode « comment le code accomplit
 techniquement la tâche », elle reste en dur.
 
-**Modèle Claude** : défini dans `profile.yaml` (`claude_model`). Vérifier
+**Modèle Claude** : défini dans `.env` (`CLAUDE_MODEL`), lu directement
+depuis l'environnement (pas de valeur par défaut cachée — erreur explicite
+si absent). Vérifier
 https://platform.claude.com/docs/en/about-claude/model-deprecations avant
 toute mise à jour.
 
@@ -120,8 +125,6 @@ personnaliser le comportement de l'agent. Il contient :
 - `github_topics` : topics GitHub Trending surveillés
 - `youtube_channels` : chaînes YouTube (handles `@...` ou identifiants `UC...`)
 - `youtube_max_per_channel` : nombre max de vidéos collectées par chaîne
-- `claude_model` : identifiant du modèle Claude utilisé pour l'analyse et les
-  deepdives
 - `claude_batch_size` : nombre d'articles par appel Claude
 - `deepdive_threshold` : score minimum déclenchant un deepdive
 - `max_items_per_briefing` : nombre maximum d'articles dans un briefing
@@ -165,11 +168,11 @@ Fonctions :
 
 `UserProfile` est la dataclass unique portant tout ce qui est personnalisable :
 thématiques, contexte narratif, critères de scoring, sources à surveiller et
-paramètres techniques (modèle Claude, seuils, tailles de batch).
+paramètres techniques (seuils, tailles de batch).
 
 - `UserProfile` : `topics`, `context`, `scoring_high/medium/low`, `threshold`,
   `rss_feeds`, `rss_since_days`, `arxiv_categories`, `github_topics`,
-  `youtube_channels`, `youtube_max_per_channel`, `claude_model`,
+  `youtube_channels`, `youtube_max_per_channel`,
   `claude_batch_size`, `deepdive_threshold`, `max_items_per_briefing`,
   `recap_since_weeks`
 - `load_profile(path: Path) -> UserProfile` : charge `profile.yaml` via
@@ -232,7 +235,7 @@ en dur.
 ### `bin/analyst.py` — Cœur IA
 
 - `analyze_batch(items, profile, fulltext, model=None) -> list[ScoredItem]`
-  — `model` par défaut résolu depuis `profile.claude_model`
+  — `model` résolu par l'appelant depuis `CLAUDE_MODEL` (`.env`)
 - `deepdive(item, profile, model=None) -> str` — approfondissement via l'outil
   `web_search` intégré, pour les articles `relevance >= 9`
 - `run_deepdives(scored_items, profile, model=None, threshold=9.0) -> list[ScoredItem]`
@@ -283,7 +286,7 @@ restent en dur.
   enregistre les articles avec `relevance >= threshold` dans la table
   `briefing_items`
 - `generate_monthly_recap(db_path, profile, output_dir, since_weeks, email_to)` :
-  Top-K du mois via `profile.claude_model`
+  Top-K du mois via `CLAUDE_MODEL` (`.env`)
 
 ---
 
@@ -323,13 +326,16 @@ Copier `.env.example` en `.env` à la racine du projet.
 | Variable            | Obligatoire | Usage                                         |
 |---------------------|-------------|-----------------------------------------------|
 | `ANTHROPIC_API_KEY` | Oui         | Authentification API Claude                   |
+| `CLAUDE_MODEL`      | Oui         | Modèle Claude pour l'analyse et les deepdives |
 | `GMAIL_FROM`        | Non         | Adresse Gmail expéditrice                     |
 | `GMAIL_APP_PASSWORD`| Non         | Mot de passe d'application Gmail (16 chars)   |
 | `GITHUB_TOKEN`      | Non         | API GitHub > 60 req/h (utile si > 10 topics)  |
 | `YOUTUBE_API_KEY`   | Non         | Requis pour activer la collecte YouTube       |
 
-**Règle** : `.env` est réservé aux secrets/identifiants — jamais de valeur
-tunable (seuil, source, modèle) n'y vit. `.env` est gitignore.
+**Règle** : `.env` est réservé aux secrets/identifiants et aux paramètres
+techniques d'exécution non-fonctionnels (modèle Claude, destinataire email) —
+jamais de valeur de personnalisation fonctionnelle (thématique, source,
+seuil de scoring), qui vit dans `profile.yaml`. `.env` est gitignore.
 
 ---
 
@@ -391,7 +397,7 @@ python -c "import sqlite3; sqlite3.connect('src/veille_agent/data/watch.db').exe
 2. **Modifier le profil** : éditer uniquement `config/profile.yaml` — pas de
    code à changer.
 
-3. **Changer le modèle Claude** : éditer `claude_model` dans `profile.yaml` —
+3. **Changer le modèle Claude** : éditer `CLAUDE_MODEL` dans `.env` —
    pas de code à changer. Vérifier
    https://platform.claude.com/docs/en/about-claude/model-deprecations avant
    toute mise à jour.
