@@ -1,0 +1,1153 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modules &mdash; veille_agent 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="veille_agent documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            veille_agent
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.__main__">veille_agent.__main__</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.__main__.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.__main__.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.analyst">veille_agent.bin.analyst</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem"><code class="docutils literal notranslate"><span class="pre">ScoredItem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.__init__"><code class="docutils literal notranslate"><span class="pre">ScoredItem.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.deepdive"><code class="docutils literal notranslate"><span class="pre">ScoredItem.deepdive</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.item"><code class="docutils literal notranslate"><span class="pre">ScoredItem.item</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.poc_idea"><code class="docutils literal notranslate"><span class="pre">ScoredItem.poc_idea</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.relevance"><code class="docutils literal notranslate"><span class="pre">ScoredItem.relevance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.summary_fr"><code class="docutils literal notranslate"><span class="pre">ScoredItem.summary_fr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.tags"><code class="docutils literal notranslate"><span class="pre">ScoredItem.tags</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem.why_relevant"><code class="docutils literal notranslate"><span class="pre">ScoredItem.why_relevant</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.analyst.analyze_batch"><code class="docutils literal notranslate"><span class="pre">analyze_batch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.analyst.deepdive"><code class="docutils literal notranslate"><span class="pre">deepdive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.analyst.run_deepdives"><code class="docutils literal notranslate"><span class="pre">run_deepdives()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.briefing">veille_agent.bin.briefing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.briefing.generate_html_briefing"><code class="docutils literal notranslate"><span class="pre">generate_html_briefing()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.briefing.generate_markdown_briefing"><code class="docutils literal notranslate"><span class="pre">generate_markdown_briefing()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.collector">veille_agent.bin.collector</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.collector.RawItem"><code class="docutils literal notranslate"><span class="pre">RawItem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.collector.RawItem.__init__"><code class="docutils literal notranslate"><span class="pre">RawItem.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.collector.RawItem.published"><code class="docutils literal notranslate"><span class="pre">RawItem.published</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.collector.RawItem.source"><code class="docutils literal notranslate"><span class="pre">RawItem.source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.collector.RawItem.summary"><code class="docutils literal notranslate"><span class="pre">RawItem.summary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.collector.RawItem.title"><code class="docutils literal notranslate"><span class="pre">RawItem.title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.collector.RawItem.uid"><code class="docutils literal notranslate"><span class="pre">RawItem.uid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.collector.RawItem.url"><code class="docutils literal notranslate"><span class="pre">RawItem.url</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.collector.collect_arxiv"><code class="docutils literal notranslate"><span class="pre">collect_arxiv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.collector.collect_github_trending"><code class="docutils literal notranslate"><span class="pre">collect_github_trending()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.collector.collect_rss"><code class="docutils literal notranslate"><span class="pre">collect_rss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.collector.deduplicate"><code class="docutils literal notranslate"><span class="pre">deduplicate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.collector.mark_seen"><code class="docutils literal notranslate"><span class="pre">mark_seen()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.filter">veille_agent.bin.filter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.filter.keyword_score"><code class="docutils literal notranslate"><span class="pre">keyword_score()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.filter.pre_filter"><code class="docutils literal notranslate"><span class="pre">pre_filter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.mailer">veille_agent.bin.mailer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.mailer.send_email"><code class="docutils literal notranslate"><span class="pre">send_email()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.profile">veille_agent.bin.profile</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile"><code class="docutils literal notranslate"><span class="pre">UserProfile</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.__init__"><code class="docutils literal notranslate"><span class="pre">UserProfile.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.arxiv_categories"><code class="docutils literal notranslate"><span class="pre">UserProfile.arxiv_categories</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.claude_batch_size"><code class="docutils literal notranslate"><span class="pre">UserProfile.claude_batch_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.context"><code class="docutils literal notranslate"><span class="pre">UserProfile.context</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.deepdive_threshold"><code class="docutils literal notranslate"><span class="pre">UserProfile.deepdive_threshold</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.github_topics"><code class="docutils literal notranslate"><span class="pre">UserProfile.github_topics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.max_items_per_briefing"><code class="docutils literal notranslate"><span class="pre">UserProfile.max_items_per_briefing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.recap_since_weeks"><code class="docutils literal notranslate"><span class="pre">UserProfile.recap_since_weeks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.rss_feeds"><code class="docutils literal notranslate"><span class="pre">UserProfile.rss_feeds</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.rss_since_days"><code class="docutils literal notranslate"><span class="pre">UserProfile.rss_since_days</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.scoring_high"><code class="docutils literal notranslate"><span class="pre">UserProfile.scoring_high</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.scoring_low"><code class="docutils literal notranslate"><span class="pre">UserProfile.scoring_low</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.scoring_medium"><code class="docutils literal notranslate"><span class="pre">UserProfile.scoring_medium</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.threshold"><code class="docutils literal notranslate"><span class="pre">UserProfile.threshold</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.topics"><code class="docutils literal notranslate"><span class="pre">UserProfile.topics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.youtube_channels"><code class="docutils literal notranslate"><span class="pre">UserProfile.youtube_channels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile.youtube_max_per_channel"><code class="docutils literal notranslate"><span class="pre">UserProfile.youtube_max_per_channel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.profile.load_profile"><code class="docutils literal notranslate"><span class="pre">load_profile()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.publisher">veille_agent.bin.publisher</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.publisher.publish_briefing"><code class="docutils literal notranslate"><span class="pre">publish_briefing()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.reader">veille_agent.bin.reader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.reader.fetch_fulltext"><code class="docutils literal notranslate"><span class="pre">fetch_fulltext()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.recap">veille_agent.bin.recap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.recap.generate_monthly_recap"><code class="docutils literal notranslate"><span class="pre">generate_monthly_recap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.recap.load_recent_scored_items"><code class="docutils literal notranslate"><span class="pre">load_recent_scored_items()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.recap.persist_scored_items"><code class="docutils literal notranslate"><span class="pre">persist_scored_items()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-veille_agent.bin.youtube">veille_agent.bin.youtube</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.youtube.collect_youtube"><code class="docutils literal notranslate"><span class="pre">collect_youtube()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#veille_agent.bin.youtube.fetch_transcript"><code class="docutils literal notranslate"><span class="pre">fetch_transcript()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">veille_agent</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Modules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h1>
+<section id="module-veille_agent.__main__">
+<span id="veille-agent-main"></span><h2>veille_agent.__main__<a class="headerlink" href="#module-veille_agent.__main__" title="Link to this heading"></a></h2>
+<p>Point d’entrée principal de l’agent de veille technologique.</p>
+<dl class="simple">
+<dt>Orchestration complète du pipeline :</dt><dd><p>collecte → déduplication → filtrage → extraction → analyse
+→ deepdive → briefing → persistance → recap mensuel (optionnel)</p>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">veille_agent</span>                    <span class="c1"># run hebdomadaire complet</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">veille_agent</span> <span class="o">--</span><span class="n">dry</span><span class="o">-</span><span class="n">run</span>          <span class="c1"># collecte + filtre sans Claude</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">veille_agent</span> <span class="o">--</span><span class="n">email</span> <span class="n">a</span><span class="nd">@b</span><span class="o">.</span><span class="n">com</span>    <span class="c1"># avec envoi Gmail</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">veille_agent</span> <span class="o">--</span><span class="n">recap</span>            <span class="c1"># recap mensuel uniquement</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">veille_agent</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">deepdive</span>      <span class="c1"># désactiver le deepdive</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">veille_agent</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">youtube</span>       <span class="c1"># désactiver YouTube</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.__main__.main">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.__main__.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.__main__.main" title="Link to this definition"></a></dt>
+<dd><p>Point d’entrée CLI enregistré dans <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.__main__.run">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.__main__.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publish_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dry_run</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_youtube</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_deepdive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.__main__.run" title="Link to this definition"></a></dt>
+<dd><p>Exécute le pipeline hebdomadaire complet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>profile</strong> – Profil utilisateur chargé depuis <code class="docutils literal notranslate"><span class="pre">profile.yaml</span></code>.</p></li>
+<li><p><strong>db_path</strong> – Chemin vers la base SQLite.</p></li>
+<li><p><strong>output_dir</strong> – Dossier de sortie pour les briefings.</p></li>
+<li><p><strong>email_to</strong> – Si fourni, envoie le briefing HTML à cette adresse.</p></li>
+<li><p><strong>publish_path</strong> – Si fourni, copie le briefing markdown vers ce
+répertoire en plus de <code class="docutils literal notranslate"><span class="pre">output_dir</span></code> (ex : vault Obsidian).</p></li>
+<li><p><strong>dry_run</strong> – Collecte et filtre sans appeler Claude ni écrire en base.</p></li>
+<li><p><strong>enable_youtube</strong> – Active la collecte YouTube (nécessite YOUTUBE_API_KEY).</p></li>
+<li><p><strong>enable_deepdive</strong> – Active les deepdives pour les articles score &gt;= 9.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste des <a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScoredItem</span></code></a> produits.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.analyst">
+<span id="veille-agent-bin-analyst"></span><h2>veille_agent.bin.analyst<a class="headerlink" href="#module-veille_agent.bin.analyst" title="Link to this heading"></a></h2>
+<p>Analyse des articles par l’API Claude et scoring de pertinence.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">veille_agent.bin.analyst.</span></span><span class="sig-name descname"><span class="pre">ScoredItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relevance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary_fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poc_idea</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">why_relevant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deepdive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Article analysé et scoré par Claude.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.collector</span><span class="w"> </span><span class="kn">import</span> <span class="n">RawItem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">item</span> <span class="o">=</span> <span class="n">RawItem</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://x.com&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">si</span> <span class="o">=</span> <span class="n">ScoredItem</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">relevance</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">summary_fr</span><span class="o">=</span><span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">poc_idea</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">],</span> <span class="n">why_relevant</span><span class="o">=</span><span class="s2">&quot;utile&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">si</span><span class="o">.</span><span class="n">relevance</span>
+<span class="go">7.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">si</span><span class="o">.</span><span class="n">deepdive</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relevance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary_fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poc_idea</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">why_relevant</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deepdive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.deepdive">
+<span class="sig-name descname"><span class="pre">deepdive</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.deepdive" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.item">
+<span class="sig-name descname"><span class="pre">item</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.item" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.poc_idea">
+<span class="sig-name descname"><span class="pre">poc_idea</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.poc_idea" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.relevance">
+<span class="sig-name descname"><span class="pre">relevance</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.relevance" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.summary_fr">
+<span class="sig-name descname"><span class="pre">summary_fr</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.summary_fr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.tags">
+<span class="sig-name descname"><span class="pre">tags</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.tags" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.ScoredItem.why_relevant">
+<span class="sig-name descname"><span class="pre">why_relevant</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#veille_agent.bin.analyst.ScoredItem.why_relevant" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.analyze_batch">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.analyst.</span></span><span class="sig-name descname"><span class="pre">analyze_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fulltext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.analyst.analyze_batch" title="Link to this definition"></a></dt>
+<dd><p>Analyse un batch d’articles via l’API Claude.</p>
+<p>Traite jusqu’à 20 items en un seul appel pour maîtriser les coûts.
+Le JSON retourné par Claude est parsé et converti en <a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScoredItem</span></code></a>.</p>
+<p><strong>Format de sortie attendu de Claude</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;uid_md5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;relevance&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s2">&quot;summary_fr&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;poc_idea&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;why_relevant&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>items</strong> – Articles à analyser.</p></li>
+<li><p><strong>profile</strong> – Profil utilisateur chargé depuis <code class="docutils literal notranslate"><span class="pre">profile.yaml</span></code>.</p></li>
+<li><p><strong>fulltext</strong> – Dict <code class="docutils literal notranslate"><span class="pre">{uid:</span> <span class="pre">texte_extrait}</span></code> pour les articles sans résumé.</p></li>
+<li><p><strong>model</strong> – Identifiant du modèle Claude à utiliser, résolu par
+l’appelant (ex : variable d’environnement <code class="docutils literal notranslate"><span class="pre">CLAUDE_MODEL_BATCH</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste de <a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScoredItem</span></code></a> triée par pertinence décroissante.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserProfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Dev Python.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_high</span><span class="o">=</span><span class="s2">&quot;utilisable&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_medium</span><span class="o">=</span><span class="s2">&quot;moyen terme&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_low</span><span class="o">=</span><span class="s2">&quot;eloigne&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">analyze_batch</span><span class="p">([],</span> <span class="n">p</span><span class="p">,</span> <span class="p">{})</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.deepdive">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.analyst.</span></span><span class="sig-name descname"><span class="pre">deepdive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#veille_agent.bin.analyst.deepdive" title="Link to this definition"></a></dt>
+<dd><p>Approfondit un article via l’outil de recherche web intégré à Claude.</p>
+<p>Utilisé automatiquement pour les articles dont <code class="docutils literal notranslate"><span class="pre">relevance</span> <span class="pre">&gt;=</span> <span class="pre">9</span></code>.
+Claude effectue des recherches web complémentaires (via l’outil
+<code class="docutils literal notranslate"><span class="pre">web_search</span></code> du SDK Anthropic) et produit une analyse enrichie
+de 3 à 5 paragraphes en français.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item</strong> – Article à approfondir (doit avoir <code class="docutils literal notranslate"><span class="pre">relevance</span> <span class="pre">&gt;=</span> <span class="pre">9</span></code>).</p></li>
+<li><p><strong>profile</strong> – Profil utilisateur pour contextualiser l’analyse.</p></li>
+<li><p><strong>model</strong> – Modèle Claude à utiliser, résolu par l’appelant (ex :
+variable d’environnement <code class="docutils literal notranslate"><span class="pre">CLAUDE_MODEL_DEEPDIVE</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Analyse enrichie en Markdown, ou chaîne vide en cas d’erreur.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.collector</span><span class="w"> </span><span class="kn">import</span> <span class="n">RawItem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserProfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">raw</span> <span class="o">=</span> <span class="n">RawItem</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://x.com&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Dev Python.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_high</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_medium</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_low</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">si</span> <span class="o">=</span> <span class="n">ScoredItem</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span> <span class="n">relevance</span><span class="o">=</span><span class="mf">9.0</span><span class="p">,</span> <span class="n">summary_fr</span><span class="o">=</span><span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">poc_idea</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">deepdive</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.analyst.run_deepdives">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.analyst.</span></span><span class="sig-name descname"><span class="pre">run_deepdives</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scored_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">9.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.analyst.run_deepdives" title="Link to this definition"></a></dt>
+<dd><p>Lance les deepdives pour les articles dépassant le seuil de pertinence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scored_items</strong> – Tous les articles scorés de la semaine.</p></li>
+<li><p><strong>profile</strong> – Profil utilisateur.</p></li>
+<li><p><strong>model</strong> – Modèle Claude à utiliser, résolu par l’appelant (ex :
+variable d’environnement <code class="docutils literal notranslate"><span class="pre">CLAUDE_MODEL_DEEPDIVE</span></code>).</p></li>
+<li><p><strong>threshold</strong> – Score minimum pour déclencher un deepdive (défaut : 9.0).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>La même liste avec le champ <code class="docutils literal notranslate"><span class="pre">deepdive</span></code> renseigné pour les
+articles concernés.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserProfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Dev Python.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_high</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_medium</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_low</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">run_deepdives</span><span class="p">([],</span> <span class="n">p</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.briefing">
+<span id="veille-agent-bin-briefing"></span><h2>veille_agent.bin.briefing<a class="headerlink" href="#module-veille_agent.bin.briefing" title="Link to this heading"></a></h2>
+<p>Génération des livrables : briefing HTML et Markdown.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.briefing.generate_html_briefing">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.briefing.</span></span><span class="sig-name descname"><span class="pre">generate_html_briefing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scored_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#veille_agent.bin.briefing.generate_html_briefing" title="Link to this definition"></a></dt>
+<dd><p>Génère un briefing HTML autonome (CSS intégré, pas de CDN).</p>
+<p>Inclut la section deepdive pour les articles dont le champ
+<code class="docutils literal notranslate"><span class="pre">ScoredItem.deepdive</span></code> est renseigné.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scored_items</strong> – Articles scorés et triés par pertinence.</p></li>
+<li><p><strong>profile</strong> – Profil utilisateur pour les seuils et plafonds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Chaîne HTML complète prête à écrire sur disque ou envoyer par email.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserProfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Dev Python.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_high</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_medium</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_low</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">html</span> <span class="o">=</span> <span class="n">generate_html_briefing</span><span class="p">([],</span> <span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;&lt;html&quot;</span> <span class="ow">in</span> <span class="n">html</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.briefing.generate_markdown_briefing">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.briefing.</span></span><span class="sig-name descname"><span class="pre">generate_markdown_briefing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scored_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#veille_agent.bin.briefing.generate_markdown_briefing" title="Link to this definition"></a></dt>
+<dd><p>Génère un briefing Markdown compatible Obsidian / Notion.</p>
+<p>Inclut le deepdive en section repliable (bloc <code class="docutils literal notranslate"><span class="pre">&lt;details&gt;</span></code>) pour
+les articles concernés.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scored_items</strong> – Articles scorés et triés par pertinence.</p></li>
+<li><p><strong>profile</strong> – Profil utilisateur pour les seuils et plafonds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Chaîne Markdown.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserProfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Dev Python.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_high</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_medium</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_low</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">md</span> <span class="o">=</span> <span class="n">generate_markdown_briefing</span><span class="p">([],</span> <span class="n">p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">md</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;# Veille tech&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.collector">
+<span id="veille-agent-bin-collector"></span><h2>veille_agent.bin.collector<a class="headerlink" href="#module-veille_agent.bin.collector" title="Link to this heading"></a></h2>
+<p>Collecte multi-sources : RSS, arXiv, GitHub trending.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">veille_agent.bin.collector.</span></span><span class="sig-name descname"><span class="pre">RawItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#veille_agent.bin.collector.RawItem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Représente un article brut collecté depuis une source.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">item</span> <span class="o">=</span> <span class="n">RawItem</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;RSS&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">uid</span><span class="p">)</span>
+<span class="go">32</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">published</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.bin.collector.RawItem.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem.published">
+<span class="sig-name descname"><span class="pre">published</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#veille_agent.bin.collector.RawItem.published" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem.source">
+<span class="sig-name descname"><span class="pre">source</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.collector.RawItem.source" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></span><a class="headerlink" href="#veille_agent.bin.collector.RawItem.summary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.collector.RawItem.title" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem.uid">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">uid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.collector.RawItem.uid" title="Link to this definition"></a></dt>
+<dd><p>Identifiant unique basé sur le hash MD5 de l’URL.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.RawItem.url">
+<span class="sig-name descname"><span class="pre">url</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.collector.RawItem.url" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.collect_arxiv">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.collector.</span></span><span class="sig-name descname"><span class="pre">collect_arxiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.collector.collect_arxiv" title="Link to this definition"></a></dt>
+<dd><p>Collecte les derniers papiers arXiv pour les catégories données.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>categories</strong> – Catégories arXiv (ex: <code class="docutils literal notranslate"><span class="pre">[&quot;cs.AI&quot;,</span> <span class="pre">&quot;cs.LG&quot;]</span></code>).</p></li>
+<li><p><strong>max_results</strong> – Nombre maximum de résultats à retourner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste de <a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RawItem</span></code></a>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collect_arxiv</span><span class="p">([])</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.collect_github_trending">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.collector.</span></span><span class="sig-name descname"><span class="pre">collect_github_trending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.collector.collect_github_trending" title="Link to this definition"></a></dt>
+<dd><p>Collecte les dépôts GitHub populaires par topic.</p>
+<p>Utilise l’API publique de recherche GitHub (60 req/h sans token).
+Ajouter <code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code> en variable d’environnement si &gt; 10 topics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>topics</strong> – Topics GitHub (ex: <code class="docutils literal notranslate"><span class="pre">[&quot;llm&quot;,</span> <span class="pre">&quot;data-engineering&quot;]</span></code>).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste de <a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RawItem</span></code></a>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collect_github_trending</span><span class="p">([])</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.collect_rss">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.collector.</span></span><span class="sig-name descname"><span class="pre">collect_rss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feeds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since_days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.collector.collect_rss" title="Link to this definition"></a></dt>
+<dd><p>Collecte les articles depuis une liste de flux RSS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feeds</strong> – Liste de dicts <code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">str,</span> <span class="pre">&quot;url&quot;:</span> <span class="pre">str}</span></code>.</p></li>
+<li><p><strong>since_days</strong> – Ne retenir que les articles publiés dans cette fenêtre.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste de <a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RawItem</span></code></a> triés du plus récent au plus ancien.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collect_rss</span><span class="p">([],</span> <span class="n">since_days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.deduplicate">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.collector.</span></span><span class="sig-name descname"><span class="pre">deduplicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'watch.db'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.collector.deduplicate" title="Link to this definition"></a></dt>
+<dd><p>Filtre les items déjà traités lors des semaines précédentes.</p>
+<p>Ne fait que <strong>lire</strong> la base SQLite. Pour persister les nouveaux items
+après un traitement réussi, appeler <a class="reference internal" href="#veille_agent.bin.collector.mark_seen" title="veille_agent.bin.collector.mark_seen"><code class="xref py py-func docutils literal notranslate"><span class="pre">mark_seen()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>items</strong> – Items à dédupliquer.</p></li>
+<li><p><strong>db_path</strong> – Chemin vers la base SQLite.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sous-liste des items non encore traités.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">deduplicate</span><span class="p">([])</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.collector.mark_seen">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.collector.</span></span><span class="sig-name descname"><span class="pre">mark_seen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'watch.db'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.bin.collector.mark_seen" title="Link to this definition"></a></dt>
+<dd><p>Enregistre les UIDs des items dans la table <code class="docutils literal notranslate"><span class="pre">seen</span></code> après traitement.</p>
+<p>À appeler uniquement une fois le pipeline terminé avec succès, pour
+éviter de bloquer des items non traités en cas d’erreur intermédiaire.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>items</strong> – Items à marquer comme traités.</p></li>
+<li><p><strong>db_path</strong> – Chemin vers la base SQLite.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mark_seen</span><span class="p">([])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.filter">
+<span id="veille-agent-bin-filter"></span><h2>veille_agent.bin.filter<a class="headerlink" href="#module-veille_agent.bin.filter" title="Link to this heading"></a></h2>
+<p>Pré-filtrage thématique par mots-clés avant analyse Claude.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.filter.keyword_score">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.filter.</span></span><span class="sig-name descname"><span class="pre">keyword_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">topics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#veille_agent.bin.filter.keyword_score" title="Link to this definition"></a></dt>
+<dd><p>Calcule un score de pertinence 0-1 par correspondance de mots-clés.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item</strong> – Article à scorer.</p></li>
+<li><p><strong>topics</strong> – Liste de thématiques de référence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Score entre 0.0 et 1.0.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.collector</span><span class="w"> </span><span class="kn">import</span> <span class="n">RawItem</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">item</span> <span class="o">=</span> <span class="n">RawItem</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;dbt core update&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://x.com&quot;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s2">&quot;RSS&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyword_score</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">keyword_score</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="p">[])</span> <span class="o">==</span> <span class="mf">0.0</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.filter.pre_filter">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.filter.</span></span><span class="sig-name descname"><span class="pre">pre_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.08</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.filter.pre_filter" title="Link to this definition"></a></dt>
+<dd><p>Élimine les items clairement hors-sujet avant l’analyse Claude.</p>
+<p>Le seuil est volontairement bas (0.08) pour ne pas rater de signal —
+Claude affine le scoring ensuite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>items</strong> – Articles à filtrer.</p></li>
+<li><p><strong>topics</strong> – Thématiques de référence.</p></li>
+<li><p><strong>threshold</strong> – Score minimum pour conserver un item.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sous-liste des items dont le score dépasse le seuil.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pre_filter</span><span class="p">([],</span> <span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">])</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.mailer">
+<span id="veille-agent-bin-mailer"></span><h2>veille_agent.bin.mailer<a class="headerlink" href="#module-veille_agent.bin.mailer" title="Link to this heading"></a></h2>
+<p>Envoi du briefing par email via Gmail (SMTP + mot de passe d’application).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.mailer.send_email">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.mailer.</span></span><span class="sig-name descname"><span class="pre">send_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html_body</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.bin.mailer.send_email" title="Link to this definition"></a></dt>
+<dd><p>Envoie le briefing HTML par email via Gmail.</p>
+<p>Utilise SMTP avec STARTTLS et un mot de passe d’application Gmail
+(à générer sur <a class="reference external" href="https://myaccount.google.com/apppasswords">https://myaccount.google.com/apppasswords</a>).</p>
+<p>Les paramètres sont lus depuis les variables d’environnement :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GMAIL_FROM</span></code> : adresse Gmail expéditrice (ex: <a class="reference external" href="mailto:vous&#37;&#52;&#48;gmail&#46;com">vous<span>&#64;</span>gmail<span>&#46;</span>com</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GMAIL_APP_PASSWORD</span></code> : mot de passe d’application Gmail (16 caractères,
+sans espaces)</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>html_body</strong> – Contenu HTML du message.</p></li>
+<li><p><strong>to</strong> – Adresse email du destinataire.</p></li>
+<li><p><strong>subject</strong> – Objet du message.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – Si <code class="docutils literal notranslate"><span class="pre">GMAIL_FROM</span></code> ou <code class="docutils literal notranslate"><span class="pre">GMAIL_APP_PASSWORD</span></code> ne sont pas
+    définis dans l’environnement.</p></li>
+<li><p><strong>smtplib.SMTPException</strong> – En cas d’erreur lors de l’envoi.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Ne peut pas être testé sans compte Gmail configuré</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">callable</span><span class="p">(</span><span class="n">send_email</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.profile">
+<span id="veille-agent-bin-profile"></span><h2>veille_agent.bin.profile<a class="headerlink" href="#module-veille_agent.bin.profile" title="Link to this heading"></a></h2>
+<p>Chargement du profil utilisateur depuis le fichier YAML déclaratif.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">veille_agent.bin.profile.</span></span><span class="sig-name descname"><span class="pre">UserProfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">topics:</span> <span class="pre">list[str],</span> <span class="pre">context:</span> <span class="pre">str,</span> <span class="pre">scoring_high:</span> <span class="pre">str,</span> <span class="pre">scoring_medium:</span> <span class="pre">str,</span> <span class="pre">scoring_low:</span> <span class="pre">str,</span> <span class="pre">threshold:</span> <span class="pre">float,</span> <span class="pre">rss_feeds:</span> <span class="pre">list[dict[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">arxiv_categories:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">github_topics:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">youtube_channels:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">youtube_max_per_channel:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3,</span> <span class="pre">max_items_per_briefing:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">20,</span> <span class="pre">deepdive_threshold:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">9.0,</span> <span class="pre">rss_since_days:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">7,</span> <span class="pre">claude_batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">20,</span> <span class="pre">recap_since_weeks:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4</span></em><span class="sig-paren">)</span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Profil utilisateur chargé depuis <code class="docutils literal notranslate"><span class="pre">config/profile.yaml</span></code>.</p>
+<p>Porte tout ce qui est personnalisable dans l’agent : thématiques,
+contexte narratif, critères de scoring, sources à surveiller et
+paramètres techniques (modèle Claude, seuils, tailles de batch).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Dev Python senior.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_high</span><span class="o">=</span><span class="s2">&quot;utilisable cette semaine&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_medium</span><span class="o">=</span><span class="s2">&quot;applicable à moyen terme&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_low</span><span class="o">=</span><span class="s2">&quot;trop éloigné&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;dbt&quot;</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">topics</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">threshold</span>
+<span class="go">6.0</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">topics:</span> <span class="pre">list[str],</span> <span class="pre">context:</span> <span class="pre">str,</span> <span class="pre">scoring_high:</span> <span class="pre">str,</span> <span class="pre">scoring_medium:</span> <span class="pre">str,</span> <span class="pre">scoring_low:</span> <span class="pre">str,</span> <span class="pre">threshold:</span> <span class="pre">float,</span> <span class="pre">rss_feeds:</span> <span class="pre">list[dict[str,</span> <span class="pre">str]]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">arxiv_categories:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">github_topics:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">youtube_channels:</span> <span class="pre">list[str]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">youtube_max_per_channel:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3,</span> <span class="pre">max_items_per_briefing:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">20,</span> <span class="pre">deepdive_threshold:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">9.0,</span> <span class="pre">rss_since_days:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">7,</span> <span class="pre">claude_batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">20,</span> <span class="pre">recap_since_weeks:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">4</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.__init__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.arxiv_categories">
+<span class="sig-name descname"><span class="pre">arxiv_categories</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.arxiv_categories" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.claude_batch_size">
+<span class="sig-name descname"><span class="pre">claude_batch_size</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.claude_batch_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.context">
+<span class="sig-name descname"><span class="pre">context</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.context" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.deepdive_threshold">
+<span class="sig-name descname"><span class="pre">deepdive_threshold</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9.0</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.deepdive_threshold" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.github_topics">
+<span class="sig-name descname"><span class="pre">github_topics</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.github_topics" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.max_items_per_briefing">
+<span class="sig-name descname"><span class="pre">max_items_per_briefing</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.max_items_per_briefing" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.recap_since_weeks">
+<span class="sig-name descname"><span class="pre">recap_since_weeks</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.recap_since_weeks" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.rss_feeds">
+<span class="sig-name descname"><span class="pre">rss_feeds</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.rss_feeds" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.rss_since_days">
+<span class="sig-name descname"><span class="pre">rss_since_days</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.rss_since_days" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.scoring_high">
+<span class="sig-name descname"><span class="pre">scoring_high</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.scoring_high" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.scoring_low">
+<span class="sig-name descname"><span class="pre">scoring_low</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.scoring_low" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.scoring_medium">
+<span class="sig-name descname"><span class="pre">scoring_medium</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.scoring_medium" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.threshold">
+<span class="sig-name descname"><span class="pre">threshold</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.threshold" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.topics">
+<span class="sig-name descname"><span class="pre">topics</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.topics" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.youtube_channels">
+<span class="sig-name descname"><span class="pre">youtube_channels</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.youtube_channels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.UserProfile.youtube_max_per_channel">
+<span class="sig-name descname"><span class="pre">youtube_max_per_channel</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></span><a class="headerlink" href="#veille_agent.bin.profile.UserProfile.youtube_max_per_channel" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.profile.load_profile">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.profile.</span></span><span class="sig-name descname"><span class="pre">load_profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></span><a class="headerlink" href="#veille_agent.bin.profile.load_profile" title="Link to this definition"></a></dt>
+<dd><p>Charge le profil utilisateur depuis un fichier YAML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – Chemin vers le fichier <code class="docutils literal notranslate"><span class="pre">profile.yaml</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Instance de <a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><code class="xref py py-class docutils literal notranslate"><span class="pre">UserProfile</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – Si le fichier n’existe pas.</p></li>
+<li><p><strong>KeyError</strong> – Si une clé obligatoire est absente du YAML.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">pathlib</span><span class="o">,</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yaml_content</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="gp">... </span><span class="s1">    topics: [dbt, python]</span>
+<span class="gp">... </span><span class="s1">    context: &quot;Dev Python.&quot;</span>
+<span class="gp">... </span><span class="s1">    scoring:</span>
+<span class="gp">... </span><span class="s1">      high: &quot;utilisable&quot;</span>
+<span class="gp">... </span><span class="s1">      medium: &quot;moyen terme&quot;</span>
+<span class="gp">... </span><span class="s1">      low: &quot;eloigne&quot;</span>
+<span class="gp">... </span><span class="s1">      threshold: 6.0</span>
+<span class="gp">... </span><span class="s1">    rss_feeds:</span>
+<span class="gp">... </span><span class="s1">      - name: &quot;Hacker News Best&quot;</span>
+<span class="gp">... </span><span class="s1">        url: &quot;https://hnrss.org/best&quot;</span>
+<span class="gp">... </span><span class="s1">    arxiv_categories: [cs.AI, cs.LG]</span>
+<span class="gp">... </span><span class="s1">    github_topics: [llm, python]</span>
+<span class="gp">... </span><span class="s1">    youtube_channels: [&quot;@PyCon&quot;]</span>
+<span class="gp">... </span><span class="s1">    youtube_max_per_channel: 3</span>
+<span class="gp">... </span><span class="s1">    max_items_per_briefing: 20</span>
+<span class="gp">... </span><span class="s1">    deepdive_threshold: 9.0</span>
+<span class="gp">... </span><span class="s1">    rss_since_days: 7</span>
+<span class="gp">... </span><span class="s1">    claude_batch_size: 20</span>
+<span class="gp">... </span><span class="s1">    recap_since_weeks: 4</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.yaml&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span>
+<span class="gp">... </span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml_content</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">tmp</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">profile</span> <span class="o">=</span> <span class="n">load_profile</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">profile</span><span class="o">.</span><span class="n">topics</span>
+<span class="go">[&#39;dbt&#39;, &#39;python&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">profile</span><span class="o">.</span><span class="n">threshold</span>
+<span class="go">6.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">profile</span><span class="o">.</span><span class="n">rss_feeds</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="go">&#39;Hacker News Best&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tmp</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.publisher">
+<span id="veille-agent-bin-publisher"></span><h2>veille_agent.bin.publisher<a class="headerlink" href="#module-veille_agent.bin.publisher" title="Link to this heading"></a></h2>
+<p>Publication du briefing markdown vers un répertoire secondaire (ex : vault Obsidian).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.publisher.publish_briefing">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.publisher.</span></span><span class="sig-name descname"><span class="pre">publish_briefing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">md_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">publish_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.bin.publisher.publish_briefing" title="Link to this definition"></a></dt>
+<dd><p>Copie le briefing markdown vers un répertoire secondaire.</p>
+<p>Canal secondaire par rapport à <code class="docutils literal notranslate"><span class="pre">output_dir</span></code> (sauvegarde principale) et
+à l’email : toute erreur (répertoire inexistant, permissions) est loggée
+en warning sans remonter d’exception, pour ne pas faire échouer le run.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>md_path</strong> – Chemin du fichier markdown déjà écrit dans <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>.</p></li>
+<li><p><strong>publish_path</strong> – Répertoire de destination (ex : point de montage vers
+un vault Obsidian synchronisé).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">src_dir</span><span class="p">,</span> \
+<span class="gp">... </span>     <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">dst_dir</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">src_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;2025-W42.md&quot;</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Briefing&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">publish_briefing</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst_dir</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;2025-W42.md&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="go">&#39;# Briefing&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">src_dir</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">src_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;2025-W42.md&quot;</span>
+<span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;# Briefing&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">publish_briefing</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="s2">&quot;/chemin/totalement/inexistant&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.reader">
+<span id="veille-agent-bin-reader"></span><h2>veille_agent.bin.reader<a class="headerlink" href="#module-veille_agent.bin.reader" title="Link to this heading"></a></h2>
+<p>Extraction full-text via Jina Reader (r.jina.ai).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.reader.fetch_fulltext">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.reader.</span></span><span class="sig-name descname"><span class="pre">fetch_fulltext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#veille_agent.bin.reader.fetch_fulltext" title="Link to this definition"></a></dt>
+<dd><p>Extrait le contenu texte d’une URL via Jina Reader.</p>
+<p>Jina Reader (r.jina.ai) convertit n’importe quelle page web en Markdown
+propre sans nécessiter de scraping ni de clé API.</p>
+<p>Appelé uniquement si <code class="docutils literal notranslate"><span class="pre">len(item.summary)</span> <span class="pre">&lt;</span> <span class="pre">100</span></code> pour limiter les
+requêtes. Retourne une chaîne vide en cas d’erreur (dégradation
+gracieuse — le pipeline utilise alors le résumé RSS).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> – URL de l’article à extraire.</p></li>
+<li><p><strong>max_chars</strong> – Nombre maximum de caractères à retourner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Contenu Markdown de la page, tronqué à <code class="docutils literal notranslate"><span class="pre">max_chars</span></code>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fetch_fulltext</span><span class="p">(</span><span class="s2">&quot;not-a-url&quot;</span><span class="p">)</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.recap">
+<span id="veille-agent-bin-recap"></span><h2>veille_agent.bin.recap<a class="headerlink" href="#module-veille_agent.bin.recap" title="Link to this heading"></a></h2>
+<p>Recap mensuel Top-K : tendances structurantes des 4 dernières semaines.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.recap.generate_monthly_recap">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.recap.</span></span><span class="sig-name descname"><span class="pre">generate_monthly_recap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#veille_agent.bin.profile.UserProfile" title="veille_agent.bin.profile.UserProfile"><span class="pre">UserProfile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since_weeks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.recap.generate_monthly_recap" title="Link to this definition"></a></dt>
+<dd><p>Génère le recap mensuel Top-K des tendances structurantes.</p>
+<p>Charge les articles des <code class="docutils literal notranslate"><span class="pre">since_weeks</span></code> dernières semaines depuis
+SQLite, demande à Claude d’en extraire les tendances, puis génère
+un rapport HTML et Markdown dans <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db_path</strong> – Chemin vers la base SQLite.</p></li>
+<li><p><strong>profile</strong> – Profil utilisateur (fournit aussi le modèle Claude).</p></li>
+<li><p><strong>output_dir</strong> – Dossier de sortie.</p></li>
+<li><p><strong>since_weeks</strong> – Fenêtre d’analyse en semaines (défaut : 4).</p></li>
+<li><p><strong>email_to</strong> – Si fourni, envoie le rapport par email.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste des tendances générées (dicts JSON).</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">veille_agent.bin.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserProfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dbt&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">context</span><span class="o">=</span><span class="s2">&quot;Dev Python.&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_high</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_medium</span><span class="o">=</span><span class="s2">&quot;m&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scoring_low</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_monthly_recap</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/tmp&quot;</span><span class="p">),</span> <span class="n">since_weeks</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.recap.load_recent_scored_items">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.recap.</span></span><span class="sig-name descname"><span class="pre">load_recent_scored_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since_weeks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.recap.load_recent_scored_items" title="Link to this definition"></a></dt>
+<dd><p>Charge les articles des N dernières semaines depuis SQLite.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>db_path</strong> – Chemin vers la base SQLite.</p></li>
+<li><p><strong>since_weeks</strong> – Fenêtre en semaines (défaut : 4).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste de dicts représentant les articles persistés.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">load_recent_scored_items</span><span class="p">(</span><span class="s2">&quot;:memory:&quot;</span><span class="p">,</span> <span class="n">since_weeks</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.recap.persist_scored_items">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.recap.</span></span><span class="sig-name descname"><span class="pre">persist_scored_items</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scored_items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.analyst.ScoredItem" title="veille_agent.bin.analyst.ScoredItem"><span class="pre">ScoredItem</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">week_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#veille_agent.bin.recap.persist_scored_items" title="Link to this definition"></a></dt>
+<dd><p>Persiste les articles scorés en base pour le recap mensuel.</p>
+<p>Stocke uniquement les articles dont la pertinence dépasse <code class="docutils literal notranslate"><span class="pre">threshold</span></code>
+pour ne pas encombrer la base avec du bruit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scored_items</strong> – Articles analysés cette semaine.</p></li>
+<li><p><strong>week_label</strong> – Étiquette de semaine au format <code class="docutils literal notranslate"><span class="pre">YYYY-WNN</span></code>.</p></li>
+<li><p><strong>db_path</strong> – Chemin vers la base SQLite.</p></li>
+<li><p><strong>threshold</strong> – Score minimum pour être persisté (<code class="docutils literal notranslate"><span class="pre">profile.threshold</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">persist_scored_items</span><span class="p">([],</span> <span class="s2">&quot;2025-W01&quot;</span><span class="p">,</span> <span class="s2">&quot;:memory:&quot;</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">6.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-veille_agent.bin.youtube">
+<span id="veille-agent-bin-youtube"></span><h2>veille_agent.bin.youtube<a class="headerlink" href="#module-veille_agent.bin.youtube" title="Link to this heading"></a></h2>
+<p>Collecte de vidéos YouTube et extraction de transcripts.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.youtube.collect_youtube">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.youtube.</span></span><span class="sig-name descname"><span class="pre">collect_youtube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since_days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_per_channel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><span class="pre">RawItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#veille_agent.bin.youtube.collect_youtube" title="Link to this definition"></a></dt>
+<dd><p>Collecte les vidéos récentes d’une liste de chaînes YouTube.</p>
+<p>Nécessite la variable d’environnement <code class="docutils literal notranslate"><span class="pre">YOUTUBE_API_KEY</span></code>.
+Si la clé est absente, retourne une liste vide sans erreur.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>channels</strong> – Liste d’identifiants de chaînes YouTube
+(ex: <code class="docutils literal notranslate"><span class="pre">[&quot;UCCTVrRjpphcfzTb9vCuhHsA&quot;]</span></code>).
+Accepte aussi les handles <code class="docutils literal notranslate"><span class="pre">&#64;NomDeLaChaine</span></code> — ils sont
+résolus automatiquement via l’API.</p></li>
+<li><p><strong>since_days</strong> – Fenêtre de collecte en jours.</p></li>
+<li><p><strong>max_per_channel</strong> – Nombre maximum de vidéos par chaîne.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Liste de <a class="reference internal" href="#veille_agent.bin.collector.RawItem" title="veille_agent.bin.collector.RawItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">RawItem</span></code></a>.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collect_youtube</span><span class="p">([])</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collect_youtube</span><span class="p">([</span><span class="s2">&quot;UCtest&quot;</span><span class="p">],</span> <span class="n">since_days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="veille_agent.bin.youtube.fetch_transcript">
+<span class="sig-prename descclassname"><span class="pre">veille_agent.bin.youtube.</span></span><span class="sig-name descname"><span class="pre">fetch_transcript</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">video_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_chars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#veille_agent.bin.youtube.fetch_transcript" title="Link to this definition"></a></dt>
+<dd><p>Extrait le transcript d’une vidéo YouTube.</p>
+<p>Utilise la bibliothèque <code class="docutils literal notranslate"><span class="pre">youtube-transcript-api</span></code> qui récupère les
+sous-titres auto-générés ou manuels sans clé API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>video_id</strong> – Identifiant YouTube de la vidéo (ex: <code class="docutils literal notranslate"><span class="pre">&quot;dQw4w9WgXcQ&quot;</span></code>).</p></li>
+<li><p><strong>max_chars</strong> – Nombre maximum de caractères à retourner.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Texte du transcript tronqué, ou chaîne vide si indisponible.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fetch_transcript</span><span class="p">(</span><span class="s2">&quot;invalid_id_for_test&quot;</span><span class="p">)</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="veille_agent documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Matthieu Daviaud.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
