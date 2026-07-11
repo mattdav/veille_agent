@@ -144,7 +144,8 @@ recap_since_weeks: 4                    # fenêtre par défaut du recap mensuel
 **Ajouter un flux RSS :** ajouter une entrée `{name, url}` sous `rss_feeds`
 dans `profile.yaml` — aucun redémarrage ni modification de code requis.
 
-**Changer le modèle Claude :** éditer `CLAUDE_MODEL` dans `.env`.
+**Changer le modèle Claude :** éditer `CLAUDE_MODEL_BATCH` (scoring en masse)
+et/ou `CLAUDE_MODEL_DEEPDIVE` (deepdives + recap mensuel) dans `.env`.
 
 ### Variables d'environnement
 
@@ -155,7 +156,8 @@ variables. Le fichier `.env` est chargé automatiquement au démarrage via
 | Variable | Obligatoire | Description |
 |----------|-------------|-------------|
 | `ANTHROPIC_API_KEY` | **Oui** | Clé API Anthropic — obtenir sur [console.anthropic.com](https://console.anthropic.com/) |
-| `CLAUDE_MODEL` | **Oui** | Modèle Claude pour l'analyse et les deepdives (ex: `claude-sonnet-4-6`) |
+| `CLAUDE_MODEL_BATCH` | **Oui** | Modèle Claude pour le scoring/tagging en masse (ex: `claude-haiku-4-5`) |
+| `CLAUDE_MODEL_DEEPDIVE` | **Oui** | Modèle Claude pour les deepdives et le recap mensuel (ex: `claude-sonnet-5`) |
 | `GMAIL_FROM` | Non | Adresse Gmail expéditrice (ex: `vous@gmail.com`) |
 | `GMAIL_APP_PASSWORD` | Non | Mot de passe d'application Gmail — 16 caractères, sans espaces |
 | `GITHUB_TOKEN` | Non | Token GitHub — augmente la limite de l'API de 60 à 5 000 req/h (utile si > 10 topics) |
@@ -164,7 +166,8 @@ variables. Le fichier `.env` est chargé automatiquement au démarrage via
 Exemple de fichier `.env` :
 ```dotenv
 ANTHROPIC_API_KEY=sk-ant-...
-CLAUDE_MODEL=claude-sonnet-4-6
+CLAUDE_MODEL_BATCH=claude-haiku-4-5
+CLAUDE_MODEL_DEEPDIVE=claude-sonnet-5
 GMAIL_FROM=vous@gmail.com
 GMAIL_APP_PASSWORD=abcdabcdabcdabcd
 GITHUB_TOKEN=ghp_...

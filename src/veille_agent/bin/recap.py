@@ -254,7 +254,7 @@ def generate_monthly_recap(
 
     prompt = _build_recap_prompt(articles, profile, since_weeks)
     response = _get_client().messages.create(
-        model=os.environ["CLAUDE_MODEL"],
+        model=os.environ["CLAUDE_MODEL_DEEPDIVE"],
         max_tokens=3000,
         system=_RECAP_SYSTEM,
         messages=[{"role": "user", "content": prompt}],

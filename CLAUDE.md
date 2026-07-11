@@ -12,8 +12,8 @@ personnalisé via l'API Claude.
 **Automatisation** : `invoke` (`inv lint`, `inv test`, `inv run`…)
 **Qualité** : `ruff` (lint + format), `mypy` (strict), `pytest` (doctest + coverage)
 **Exécution** : `python -m veille_agent` ou `veille_agent` (script installé)
-**Modèle Claude** : défini dans `.env` (`CLAUDE_MODEL`) — voir
-« Principe de configuration » ci-dessous
+**Modèle Claude** : défini dans `.env` (`CLAUDE_MODEL_BATCH`,
+`CLAUDE_MODEL_DEEPDIVE`) — voir « Principe de configuration » ci-dessous
 **Infrastructure** : Docker multi-arch (amd64 + arm64), Raspberry Pi, Portainer
 **Registry** : GitHub Container Registry (`ghcr.io`)
 **Planification** : GitHub Actions cron (lundi 6h UTC) → SSH → Raspberry Pi
@@ -25,8 +25,8 @@ personnalisé via l'API Claude.
 - `.env` : secrets/identifiants (`ANTHROPIC_API_KEY`, `GMAIL_APP_PASSWORD`,
   `GITHUB_TOKEN`, `YOUTUBE_API_KEY`) **et** paramètres techniques d'exécution
   non-fonctionnels — tout ce qui définit COMMENT/AVEC QUOI le programme
-  tourne pour un déploiement donné (destinataire email `GMAIL_TO`, modèle
-  Claude `CLAUDE_MODEL`).
+  tourne pour un déploiement donné (destinataire email `GMAIL_TO`, modèles
+  Claude `CLAUDE_MODEL_BATCH`/`CLAUDE_MODEL_DEEPDIVE`).
 - `profile.yaml` : personnalisation fonctionnelle — tout ce qui définit CE
   QUE le programme surveille et comment il juge la pertinence (thématiques,
   sources à surveiller, contexte narratif, critères et seuil de scoring).
@@ -42,11 +42,35 @@ suis / ce qui m'intéresse / comment le pipeline doit se comporter », elle va
 dans `profile.yaml` ; si elle encode « comment le code accomplit
 techniquement la tâche », elle reste en dur.
 
-**Modèle Claude** : défini dans `.env` (`CLAUDE_MODEL`), lu directement
-depuis l'environnement (pas de valeur par défaut cachée — erreur explicite
-si absent). Vérifier
+**Modèle Claude — deux variables, alignées sur la nature de la tâche** :
+
+- `CLAUDE_MODEL_BATCH` (utilisé par `analyze_batch()`) : scoring/tagging
+  structuré sur le volume principal d'articles. Tâche de classification
+  où Haiku 4.5 est explicitement recommandé par Anthropic (rapport
+  qualité/coût 3x meilleur que Sonnet pour ce type d'usage) →
+  `claude-haiku-4-5`.
+- `CLAUDE_MODEL_DEEPDIVE` (utilisé par `deepdive()`/`run_deepdives()` **et**
+  `generate_monthly_recap()`) : recherche web + synthèse sur un volume
+  faible (articles score >= 9, recap mensuel) — même nature de tâche
+  agentique pour les deux, donc pas de troisième variable
+  `CLAUDE_MODEL_RECAP`. Sonnet 5 apporte un gain de qualité réel sur ce
+  type de synthèse, et le volume d'appels reste assez faible pour que le
+  coût plus élevé soit marginal → `claude-sonnet-5`.
+
+Les deux sont lues directement depuis l'environnement (pas de valeur par
+défaut cachée — erreur explicite si absente). Vérifier
 https://platform.claude.com/docs/en/about-claude/model-deprecations avant
 toute mise à jour.
+
+**Notes sur Sonnet 5** (pertinentes si `CLAUDE_MODEL_DEEPDIVE` est concerné) :
+
+- Tokenizer : ~30 % de tokens en plus à texte égal par rapport à
+  Sonnet 4.6/Haiku 4.5 — à revoir si le budget de tokens des deepdives
+  devient serré.
+- Garde-fous cybersécurité : peut refuser certains contenus dual-use.
+  Pertinent car la source explain-openclaw couvre des audits de sécurité —
+  surveiller les logs si des deepdives échouent silencieusement sur ce
+  type de contenu.
 
 ---
 
@@ -238,9 +262,10 @@ en dur.
 ### `bin/analyst.py` — Cœur IA
 
 - `analyze_batch(items, profile, fulltext, model=None) -> list[ScoredItem]`
-  — `model` résolu par l'appelant depuis `CLAUDE_MODEL` (`.env`)
+  — `model` résolu par l'appelant depuis `CLAUDE_MODEL_BATCH` (`.env`)
 - `deepdive(item, profile, model=None) -> str` — approfondissement via l'outil
-  `web_search` intégré, pour les articles `relevance >= 9`
+  `web_search` intégré, pour les articles `relevance >= 9`, `model` résolu
+  depuis `CLAUDE_MODEL_DEEPDIVE` (`.env`)
 - `run_deepdives(scored_items, profile, model=None, threshold=9.0) -> list[ScoredItem]`
 - `_build_prompt(articles_payload, profile) -> str` : construit le prompt en
   injectant `profile.context`, `profile.topics` et les critères de scoring
@@ -289,7 +314,8 @@ restent en dur.
   enregistre les articles avec `relevance >= threshold` dans la table
   `briefing_items`
 - `generate_monthly_recap(db_path, profile, output_dir, since_weeks, email_to)` :
-  Top-K du mois via `CLAUDE_MODEL` (`.env`)
+  Top-K du mois via `CLAUDE_MODEL_DEEPDIVE` (`.env`) — même variable que le
+  deepdive, tâche de synthèse de même nature
 
 ---
 
@@ -343,7 +369,8 @@ Copier `.env.example` en `.env` à la racine du projet.
 | Variable            | Obligatoire | Usage                                                             |
 |---------------------|-------------|--------------------------------------------------------------------|
 | `ANTHROPIC_API_KEY` | Oui         | Authentification API Claude                                       |
-| `CLAUDE_MODEL`      | Oui         | Modèle Claude pour l'analyse et les deepdives                     |
+| `CLAUDE_MODEL_BATCH`| Oui         | Modèle Claude pour le scoring/tagging en masse (`analyze_batch`)   |
+| `CLAUDE_MODEL_DEEPDIVE`| Oui      | Modèle Claude pour les deepdives et le recap mensuel               |
 | `GMAIL_FROM`        | Non         | Adresse Gmail expéditrice                                          |
 | `GMAIL_APP_PASSWORD`| Non         | Mot de passe d'application Gmail (16 chars)                        |
 | `GITHUB_TOKEN`      | Non         | API GitHub > 60 req/h (utile si > 10 topics)                       |
@@ -415,8 +442,8 @@ python -c "import sqlite3; sqlite3.connect('src/veille_agent/data/watch.db').exe
 2. **Modifier le profil** : éditer uniquement `config/profile.yaml` — pas de
    code à changer.
 
-3. **Changer le modèle Claude** : éditer `CLAUDE_MODEL` dans `.env` —
-   pas de code à changer. Vérifier
+3. **Changer le modèle Claude** : éditer `CLAUDE_MODEL_BATCH` et/ou
+   `CLAUDE_MODEL_DEEPDIVE` dans `.env` — pas de code à changer. Vérifier
    https://platform.claude.com/docs/en/about-claude/model-deprecations avant
    toute mise à jour.
 

@@ -159,7 +159,7 @@ def analyze_batch(
         profile: Profil utilisateur chargé depuis ``profile.yaml``.
         fulltext: Dict ``{uid: texte_extrait}`` pour les articles sans résumé.
         model: Identifiant du modèle Claude à utiliser, résolu par
-            l'appelant (ex : variable d'environnement ``CLAUDE_MODEL``).
+            l'appelant (ex : variable d'environnement ``CLAUDE_MODEL_BATCH``).
 
     Returns:
         Liste de :class:`ScoredItem` triée par pertinence décroissante.
@@ -195,7 +195,7 @@ def analyze_batch(
 
     if model is None:
         raise ValueError(
-            "model est requis (résolu par l'appelant depuis CLAUDE_MODEL)."
+            "model est requis (résolu par l'appelant depuis CLAUDE_MODEL_BATCH)."
         )
 
     response = _get_client().messages.create(
@@ -257,7 +257,7 @@ def deepdive(
         item: Article à approfondir (doit avoir ``relevance >= 9``).
         profile: Profil utilisateur pour contextualiser l'analyse.
         model: Modèle Claude à utiliser, résolu par l'appelant (ex :
-            variable d'environnement ``CLAUDE_MODEL``).
+            variable d'environnement ``CLAUDE_MODEL_DEEPDIVE``).
 
     Returns:
         Analyse enrichie en Markdown, ou chaîne vide en cas d'erreur.
@@ -295,7 +295,7 @@ def deepdive(
 
     if model is None:
         raise ValueError(
-            "model est requis (résolu par l'appelant depuis CLAUDE_MODEL)."
+            "model est requis (résolu par l'appelant depuis CLAUDE_MODEL_DEEPDIVE)."
         )
 
     try:
@@ -329,7 +329,7 @@ def run_deepdives(
         scored_items: Tous les articles scorés de la semaine.
         profile: Profil utilisateur.
         model: Modèle Claude à utiliser, résolu par l'appelant (ex :
-            variable d'environnement ``CLAUDE_MODEL``).
+            variable d'environnement ``CLAUDE_MODEL_DEEPDIVE``).
         threshold: Score minimum pour déclencher un deepdive (défaut : 9.0).
 
     Returns:
