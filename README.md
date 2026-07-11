@@ -159,6 +159,7 @@ variables. Le fichier `.env` est chargé automatiquement au démarrage via
 | `GMAIL_FROM` | Non | Adresse Gmail expéditrice (ex: `vous@gmail.com`) |
 | `GMAIL_APP_PASSWORD` | Non | Mot de passe d'application Gmail — 16 caractères, sans espaces |
 | `GITHUB_TOKEN` | Non | Token GitHub — augmente la limite de l'API de 60 à 5 000 req/h (utile si > 10 topics) |
+| `PUBLISH_PATH` | Non | Répertoire secondaire de copie du briefing markdown (ex: vault Obsidian) |
 
 Exemple de fichier `.env` :
 ```dotenv
@@ -167,6 +168,7 @@ CLAUDE_MODEL=claude-sonnet-4-6
 GMAIL_FROM=vous@gmail.com
 GMAIL_APP_PASSWORD=abcdabcdabcdabcd
 GITHUB_TOKEN=ghp_...
+PUBLISH_PATH=/publish
 ```
 
 ---
@@ -193,6 +195,9 @@ python -m veille_agent --dry-run
 
 # Écrire les briefings dans un dossier spécifique
 python -m veille_agent --output-dir /chemin/vers/dossier
+
+# Copier le briefing markdown vers un second répertoire (ex : vault Obsidian)
+python -m veille_agent --publish-path /chemin/vers/vault
 
 # Combinaison
 python -m veille_agent --email vous@gmail.com --output-dir ./sorties

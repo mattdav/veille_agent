@@ -38,6 +38,7 @@ from veille_agent.bin.collector import (
 from veille_agent.bin.filter import pre_filter
 from veille_agent.bin.mailer import send_email
 from veille_agent.bin.profile import UserProfile, load_profile
+from veille_agent.bin.publisher import publish_briefing
 from veille_agent.bin.reader import fetch_fulltext
 from veille_agent.bin.recap import generate_monthly_recap, persist_scored_items
 from veille_agent.bin.youtube import collect_youtube
@@ -95,6 +96,7 @@ def run(
     db_path: str,
     output_dir: Path,
     email_to: str | None = None,
+    publish_path: str | None = None,
     dry_run: bool = False,
     enable_youtube: bool = True,
     enable_deepdive: bool = True,
@@ -106,6 +108,8 @@ def run(
         db_path: Chemin vers la base SQLite.
         output_dir: Dossier de sortie pour les briefings.
         email_to: Si fourni, envoie le briefing HTML à cette adresse.
+        publish_path: Si fourni, copie le briefing markdown vers ce
+            répertoire en plus de ``output_dir`` (ex : vault Obsidian).
         dry_run: Collecte et filtre sans appeler Claude ni écrire en base.
         enable_youtube: Active la collecte YouTube (nécessite YOUTUBE_API_KEY).
         enable_deepdive: Active les deepdives pour les articles score >= 9.
@@ -178,8 +182,12 @@ def run(
     md = generate_markdown_briefing(scored_all, profile)
 
     (output_dir / f"{stem}.html").write_text(html, encoding="utf-8")
-    (output_dir / f"{stem}.md").write_text(md, encoding="utf-8")
+    md_path = output_dir / f"{stem}.md"
+    md_path.write_text(md, encoding="utf-8")
     print(f"Briefing sauvegardé : {output_dir / stem}.*")
+
+    if publish_path:
+        publish_briefing(md_path, publish_path)
 
     mark_seen(items, db_path)
     persist_scored_items(scored_all, stem, db_path, threshold=profile.threshold)
@@ -210,6 +218,13 @@ def main() -> None:
         default=None,
         metavar="CHEMIN",
         help="Dossier de sortie des briefings (défaut : data/briefings/)",
+    )
+    parser.add_argument(
+        "--publish-path",
+        metavar="CHEMIN",
+        help="Copier le briefing markdown vers ce répertoire en plus de "
+        "output_dir (ex : point de montage vers un vault Obsidian). "
+        "Défaut : variable d'environnement PUBLISH_PATH.",
     )
     parser.add_argument(
         "--no-youtube",
@@ -248,6 +263,7 @@ def main() -> None:
 
     # L'adresse destinataire : CLI en priorité, sinon variable d'environnement
     email_to = args.email or os.environ.get("GMAIL_TO") or None
+    publish_path = args.publish_path or os.environ.get("PUBLISH_PATH")
 
     try:
         if args.recap:
@@ -266,6 +282,7 @@ def main() -> None:
                 db_path=db_path,
                 output_dir=output_dir,
                 email_to=email_to,
+                publish_path=publish_path,
                 dry_run=args.dry_run,
                 enable_youtube=not args.no_youtube,
                 enable_deepdive=not args.no_deepdive,

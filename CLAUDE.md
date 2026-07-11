@@ -85,7 +85,8 @@ veille_agent/
 │       │   ├── analyst.py             # analyse batch + deepdive via Claude API
 │       │   ├── briefing.py            # génération HTML + Markdown
 │       │   ├── recap.py               # recap mensuel Top-K + persistance SQLite
-│       │   └── mailer.py              # envoi Gmail SMTP
+│       │   ├── mailer.py              # envoi Gmail SMTP
+│       │   └── publisher.py           # copie du briefing vers un vault (Obsidian…)
 │       ├── config/                    # dossier runtime (gitignore sauf profile.yaml)
 │       │   └── profile.yaml           # ÉDITER ICI — profil utilisateur déclaratif
 │       ├── data/                      # dossier runtime (gitignore)
@@ -152,6 +153,8 @@ Fonctions :
 **Arguments CLI** :
 ```
 --email ADRESSE     Envoyer le briefing par email via Gmail
+--publish-path CHEMIN  Copier le briefing markdown vers ce répertoire en plus
+                    de output_dir (ex : vault Obsidian). Défaut : PUBLISH_PATH
 --dry-run           Collecter et filtrer sans appeler Claude ni écrire en base
 --output-dir PATH   Dossier de sortie (défaut : data/briefings/)
 --no-youtube        Désactiver la collecte YouTube
@@ -304,6 +307,20 @@ restent en dur.
 
 ---
 
+### `bin/publisher.py` — Publication vers un répertoire secondaire
+
+- `publish_briefing(md_path, publish_path)` : copie (`shutil.copy2`) le
+  briefing markdown déjà écrit dans `output_dir` vers `publish_path` (ex :
+  point de montage local vers un vault Obsidian synchronisé)
+- Échec non-bloquant : `OSError` capturée et loggée en warning — l'email et
+  `output_dir` restent le canal principal, cette copie ne doit jamais faire
+  échouer le run
+- Piloté par `--publish-path` (CLI) ou `PUBLISH_PATH` (`.env`) — même nature
+  de paramètre que `--email`/`GMAIL_TO` : configuration d'exécution, pas de
+  personnalisation de contenu
+
+---
+
 ### `tasks.py` — Automatisation invoke
 
 | Commande       | Action                                          |
@@ -323,14 +340,15 @@ restent en dur.
 Copier `.env.example` en `.env` à la racine du projet.
 `load_dotenv()` dans `__main__.py` les charge automatiquement au démarrage.
 
-| Variable            | Obligatoire | Usage                                         |
-|---------------------|-------------|-----------------------------------------------|
-| `ANTHROPIC_API_KEY` | Oui         | Authentification API Claude                   |
-| `CLAUDE_MODEL`      | Oui         | Modèle Claude pour l'analyse et les deepdives |
-| `GMAIL_FROM`        | Non         | Adresse Gmail expéditrice                     |
-| `GMAIL_APP_PASSWORD`| Non         | Mot de passe d'application Gmail (16 chars)   |
-| `GITHUB_TOKEN`      | Non         | API GitHub > 60 req/h (utile si > 10 topics)  |
-| `YOUTUBE_API_KEY`   | Non         | Requis pour activer la collecte YouTube       |
+| Variable            | Obligatoire | Usage                                                             |
+|---------------------|-------------|--------------------------------------------------------------------|
+| `ANTHROPIC_API_KEY` | Oui         | Authentification API Claude                                       |
+| `CLAUDE_MODEL`      | Oui         | Modèle Claude pour l'analyse et les deepdives                     |
+| `GMAIL_FROM`        | Non         | Adresse Gmail expéditrice                                          |
+| `GMAIL_APP_PASSWORD`| Non         | Mot de passe d'application Gmail (16 chars)                        |
+| `GITHUB_TOKEN`      | Non         | API GitHub > 60 req/h (utile si > 10 topics)                       |
+| `YOUTUBE_API_KEY`   | Non         | Requis pour activer la collecte YouTube                            |
+| `PUBLISH_PATH`      | Non         | Répertoire secondaire de copie du briefing (ex : vault Obsidian)   |
 
 **Règle** : `.env` est réservé aux secrets/identifiants et aux paramètres
 techniques d'exécution non-fonctionnels (modèle Claude, destinataire email) —
