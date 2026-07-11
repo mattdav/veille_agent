@@ -1,98 +1,168 @@
-"""Tâches d'automatisation du projet via invoke.
+import shutil
+import subprocess
+from pathlib import Path
 
-Usage::
+from invoke import Context, task
 
-    inv lint        # ruff check + ruff format --check + mypy
-    inv format      # ruff format (correction en place)
-    inv test        # pytest (doctest + unitaires + coverage)
-    inv check       # lint + test (CI complète)
-    inv run         # python -m veille_agent
-    inv dry-run     # python -m veille_agent --dry-run
-    inv recap       # recap mensuel Top-K
-"""
+# ================ Config ================= #
+CLEAN_DIRS: list[str] = [
+    "build",  # Build artefacts
+    "dist",  # Packaged distributions
+    ".pytest_cache",  # pytest cache
+    ".ruff_cache",  # Ruff cache
+    ".mypy_cache",  # mypy cache
+    ".okflint",  # JSON audit reports (regeneratable)
+    "htmlcov",  # HTML coverage report
+    "__pycache__",  # Python cache (root)
+]
 
-from invoke import Context, task  # type: ignore[import-untyped]
-
-SRC = "src/veille_agent"
-TESTS = "tests"
-ALL_PATHS = f"{SRC} {TESTS} tasks.py"
+CLEAN_FILES: list[str] = [
+    ".coverage",  # pytest-cov coverage data
+]
 
 
+# ================ Helper Functions ================= #
 @task
-def format(ctx: Context) -> None:
-    """Formate le code avec ruff format."""
-    ctx.run(f"ruff format {ALL_PATHS}", pty=False)
+def clean(c: Context) -> None:
+    """Remove build artifacts and caches."""
+    for directory in CLEAN_DIRS:
+        path: Path = Path(directory)
+        if path.exists():
+            print(f"  - Removing {directory}")
+            shutil.rmtree(path, ignore_errors=True)
+
+    for filename in CLEAN_FILES:
+        path = Path(filename)
+        if path.exists():
+            print(f"  - Removing {filename}")
+            path.unlink(missing_ok=True)
+
+    # Recursively clean __pycache__
+    for path in Path(".").rglob("__pycache__"):
+        print(f"  - Removing {path}")
+        shutil.rmtree(path, ignore_errors=True)
+
+    # Clean *.egg-info
+    for path in Path(".").rglob("*.egg-info"):
+        print(f"  - Removing {path}")
+        shutil.rmtree(path, ignore_errors=True)
+
+    # Clean .pyc files
+    for path in Path(".").rglob("*.pyc"):
+        print(f"  - Removing {path}")
+        path.unlink(missing_ok=True)
+
+    print("🗑 Clean task Done!")
 
 
+# ================ Quality test ================= #
 @task
-def lint(ctx: Context) -> None:
-    """Vérifie le style (ruff), le formatage (ruff format) et les types (mypy).
+def index(c: Context) -> None:
+    """Index the codebase in codebase-memory-mcp to improve Claude Code context.
 
-    Retourne un code d'erreur non nul si l'une des vérifications échoue.
+    Uses the CLI mode of the codebase-memory-mcp binary to index the current
+    project into the persistent knowledge graph. The index survives session
+    restarts and allows Claude Code to make structural queries
+    (call graph, dependencies, etc.) with ~99% fewer tokens than a file-by-file
+    exploration.
+
+    Re-run after every significant change to the codebase.
     """
-    ctx.run(f"ruff check {ALL_PATHS}", pty=False)
-    ctx.run(f"ruff format --check {ALL_PATHS}", pty=False)
-    ctx.run(f"mypy {SRC}", pty=False)
+    import json
+
+    binary = Path(
+        r"C:\Users\matth\AppData\Local\Programs\codebase-memory-mcp\codebase-memory-mcp.exe"
+    )
+    if not binary.exists():
+        print(f"❌ codebase-memory-mcp binary not found: {binary}")
+        print("   Install from: https://github.com/DeusData/codebase-memory-mcp")
+        return
+
+    repo_path = str(Path.cwd()).replace("\\", "/")
+    payload = json.dumps({"repo_path": repo_path})
+
+    print("🧠 Indexing codebase in codebase-memory-mcp...")
+    print(f"   Project: {repo_path}")
+    result = subprocess.run(
+        [str(binary), "cli", "index_repository", payload],
+        shell=False,
+    )
+    if result.returncode == 0:
+        print("✅ Index updated. Claude Code can now query the knowledge graph.")
+    else:
+        print("❌ Indexing failed.")
 
 
 @task
-def test(ctx: Context) -> None:
-    """Lance la suite de tests pytest (doctest + unitaires + coverage)."""
-    ctx.run("pytest", pty=False)
+def lint(c: Context) -> None:
+    """Run linting checks."""
+    result = 0
+    print("Running Ruff check...")
+    check_command = subprocess.run("uv run ruff check --fix src/.", shell=True)
+    if check_command.returncode != 0:
+        result += check_command.returncode
+    print("\nRunning Ruff format check...")
+    format_command = subprocess.run("uv run ruff format src/.", shell=True)
+    if format_command.returncode != 0:
+        result += format_command.returncode
+    print("\nRunning mypy...")
+    # uv run mypy fails on Windows with compiled mypy (Failed to canonicalize script path)
+    # Using python -m mypy as a workaround
+    mypy_command = subprocess.run("uv run python -m mypy src/.", shell=True)
+    if mypy_command.returncode != 0:
+        result += mypy_command.returncode
+    if result != 0:
+        print("❌ Linting issues found!")
+    else:
+        print("🔎 Linting Task Done!")
 
 
 @task
-def check(ctx: Context) -> None:
-    """Pipeline CI complète : lint puis tests."""
-    lint(ctx)
-    test(ctx)
+def test(c: Context, verbose: bool = False, coverage: bool = True) -> None:
+    """Run the pytest test suite."""
+    print("🧪 Running test suite...")
+
+    # Build the command
+    cmd = "uv run python -m pytest"
+    if verbose:
+        cmd += " -v"
+    if not coverage:
+        # pyproject.toml enables coverage by default via addopts
+        cmd += " --no-cov"
+
+    # Execute
+    result = subprocess.run(cmd, shell=True)
+
+    if result.returncode != 0:
+        print("❌ Tests failed!")
+    else:
+        print("✅ All tests passed!")
+        html_report = Path("htmlcov") / "index.html"
+        if html_report.exists():
+            print(f"📊 HTML report: {html_report.resolve()}")
 
 
 @task
-def run(
-    ctx: Context,
-    email: str = "",
-    output_dir: str = "",
-    no_youtube: bool = False,
-    no_deepdive: bool = False,
-) -> None:
-    """Lance l'agent de veille hebdomadaire complet.
+def docs(c: Context, open_browser: bool = False) -> None:
+    """Build the Sphinx documentation as HTML."""
+    src = Path("docs/source")
+    out = src / "_build" / "html"
+    out.mkdir(parents=True, exist_ok=True)
 
-    Args:
-        email: Adresse email destinataire du briefing (optionnel).
-        output_dir: Dossier de sortie des briefings (optionnel).
-        no_youtube: Désactiver la collecte YouTube.
-        no_deepdive: Désactiver le deepdive automatique.
-    """
-    cmd = "python -m veille_agent"
-    if email:
-        cmd += f" --email {email}"
-    if output_dir:
-        cmd += f" --output-dir {output_dir}"
-    if no_youtube:
-        cmd += " --no-youtube"
-    if no_deepdive:
-        cmd += " --no-deepdive"
-    ctx.run(cmd, pty=False)
+    print("📖 Building Sphinx documentation...")
+    result = subprocess.run(
+        f'uv run sphinx-build -b html "{src}" "{out}"',
+        shell=True,
+    )
+    if result.returncode != 0:
+        print("❌ Sphinx build failed!")
+        return
 
+    index_html = out / "index.html"
+    print(f"✅ Documentation built: {index_html.resolve()}")
 
-@task(name="dry-run")
-def dry_run(ctx: Context) -> None:
-    """Lance l'agent en mode dry-run (collecte + filtre, sans Claude)."""
-    ctx.run("python -m veille_agent --dry-run", pty=False)
+    # Optionally open in browser
+    if open_browser:
+        import webbrowser
 
-
-@task
-def recap(ctx: Context, email: str = "", weeks: int = 0) -> None:
-    """Génère le recap mensuel Top-K des tendances structurantes.
-
-    Args:
-        email: Adresse email destinataire du recap (optionnel).
-        weeks: Fenêtre en semaines (0 = valeur par défaut du profil).
-    """
-    cmd = "python -m veille_agent --recap"
-    if email:
-        cmd += f" --email {email}"
-    if weeks:
-        cmd += f" --recap-weeks {weeks}"
-    ctx.run(cmd, pty=False)
+        webbrowser.open(index_html.as_uri())
